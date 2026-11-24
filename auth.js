@@ -26,7 +26,7 @@ b.onclick=logout;foot.appendChild(b)}
 ready.then(function(){return sb.auth.getSession()}).then(function(r){
 if(!(r&&r.data&&r.data.session)){toLogin();return}
 document.documentElement.classList.add("auth-ok");
-if(location.hash.indexOf("access_token")>-1||location.search.indexOf("code=")>-1)history.replaceState(null,"",location.pathname);
+if(location.search.indexOf("code=")>-1)history.replaceState(null,"",location.pathname);else if(location.href.indexOf("#")>-1)history.replaceState(null,"",location.pathname+location.search);
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",addLogout);else addLogout()
 }).catch(toLogin);
 sb.auth.onAuthStateChange(function(ev){if(ev==="SIGNED_OUT")toLogin()});
