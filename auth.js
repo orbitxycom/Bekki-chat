@@ -3,6 +3,8 @@
 var URL_="https://adxyijyerblmosdzsbyp.supabase.co",KEY="sb_publishable_bCG2DJjBfLAMp2ME9Pe3cQ_jbPmlnnX";
 var LOGIN="https://orbitxy.com/";
 function toLogin(){location.replace(LOGIN)}
+/* buang sisa tanda # di alamat (ditinggalkan library login setelah memproses sesi) */
+(function(){var n=0,iv=setInterval(function(){if(location.href.slice(-1)==="#")history.replaceState(null,"",location.pathname+location.search);if(++n>24)clearInterval(iv)},250)})();
 /* serah-terima sesi dari halaman login (orbitxy.com) lewat tanda di bagian # alamat */
 var H=location.hash,M1=/[#&]bk_at=([^&]+)/.exec(H),M2=/[#&]bk_rt=([^&]+)/.exec(H),ready=Promise.resolve();
 var sb=window.supabase&&window.supabase.createClient?window.supabase.createClient(URL_,KEY):null;
