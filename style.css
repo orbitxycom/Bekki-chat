@@ -1049,5 +1049,5 @@ header #toggle2 svg{font-size:22px!important}
 .acts .a-rg.spin svg{animation:rgSpin .6s ease-in-out}
 @keyframes rgSpin{to{transform:rotate(360deg)}}
 /* animasi di samping "Thinking..." (orbit) */
-.bubble .shimmer-text::before{content:"";display:inline-block;width:16px;height:16px;margin-right:9px;vertical-align:-3px;border-radius:50%;background:conic-gradient(from 0deg,rgba(99,102,241,0) 0deg,rgba(99,102,241,.15) 120deg,#6366f1 330deg,#22d3ee 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));animation:thOrbit .9s linear infinite}
+.bubble .shimmer-text::before{content:"";display:inline-block;width:16px;height:16px;margin-right:9px;vertical-align:-3px;border-radius:50%;background:conic-gradient(from 0deg,rgba(167,139,250,0) 0deg,#a78bfa 110deg,#4ade80 230deg,#38bdf8 340deg,#38bdf8 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));animation:thOrbit .9s linear infinite}
 @keyframes thOrbit{to{transform:rotate(360deg)}}
