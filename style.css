@@ -1051,3 +1051,13 @@ header #toggle2 svg{font-size:22px!important}
 /* animasi di samping "Thinking..." (orbit) */
 .bubble .shimmer-text::before{content:"";display:inline-block;width:16px;height:16px;margin-right:9px;vertical-align:-3px;border-radius:50%;background:conic-gradient(from 0deg,rgba(167,139,250,0) 0deg,#a78bfa 110deg,#4ade80 230deg,#38bdf8 340deg,#38bdf8 360deg);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));mask:radial-gradient(farthest-side,transparent calc(100% - 2.5px),#000 calc(100% - 2px));animation:thOrbit .9s linear infinite}
 @keyframes thOrbit{to{transform:rotate(360deg)}}
+
+/* pager versi jawaban */
+.acts .vp{display:inline-flex;align-items:center;gap:2px;margin-right:6px;color:#9a9a94;font-size:12px;user-select:none}
+.acts .vp-t{min-width:30px;text-align:center;font-variant-numeric:tabular-nums}
+.acts .vp-b{width:22px;height:26px;display:inline-flex;align-items:center;justify-content:center;background:none;border:0;padding:0;color:inherit;cursor:pointer;border-radius:6px}
+.acts .vp-b svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.acts .vp-b:disabled{opacity:.35;cursor:default}
+.acts .vp-b:not(:disabled):hover{background:rgba(128,128,128,.14)}
+.bubble.vsw{animation:vswIn .28s ease both}
+@keyframes vswIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
