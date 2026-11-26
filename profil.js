@@ -209,7 +209,16 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".st-main{flex:1;min-height:0;padding:28px 18px max(40px,env(safe-area-inset-bottom))}"
 +".st-h{font-size:24px;margin-bottom:18px;margin-right:0}.st-in{padding:18px}.st-bar{padding:14px 18px}.st-line{padding:15px 18px}"
 +".st-x{top:max(10px,env(safe-area-inset-top));right:14px;width:40px;height:40px}"
-+".st-acc{grid-template-columns:1fr}.st-big{margin:0 auto}.st-row2{grid-template-columns:1fr}}";
++".st-acc{grid-template-columns:1fr}.st-big{margin:0 auto}.st-row2{grid-template-columns:1fr}}"
++".app-in{display:flex;gap:20px;align-items:flex-start}"
++".app-logo{width:76px;height:76px;flex:none;border-radius:19px;box-shadow:0 12px 28px rgba(49,46,129,.32),0 2px 6px rgba(0,0,0,.12)}"
++".app-tx{min-width:0}.app-tx .st-ct{margin-bottom:6px}"
++".app-tx p{margin:0 0 14px;font-size:14px;line-height:1.55;color:var(--muted-foreground)}"
++".app-chips{display:flex;flex-wrap:wrap;gap:8px}"
++".app-chips span{font-size:12px;padding:5px 12px;border-radius:999px;border:1px solid color-mix(in oklab,var(--foreground) 14%,transparent);background:color-mix(in oklab,var(--foreground) 4%,transparent)}"
++".app-bar{gap:14px}.app-hint{flex:1;min-width:0;font-size:12.5px;line-height:1.45;color:var(--muted-foreground)}"
++".st-btn:disabled{opacity:.55;cursor:default}"
++"@media(max-width:700px){.app-in{flex-direction:column;gap:14px}.app-bar{flex-wrap:wrap}.app-bar .st-btn{width:100%}}";
 var SI={
 user:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 sl:'<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
@@ -224,6 +233,15 @@ function nm(u){var m=(u&&u.user_metadata)||{},mail=(u&&u.email)||"";var f=m.firs
 if(f==null&&l==null){var full=m.full_name||m.name||(mail?mail.split("@")[0]:"");var p=String(full).split(/\s+/);f=p.shift()||"";l=p.join(" ")}
 return {f:f||"",l:l||""}}
 function inis(u){var n=nm(u),a=((n.f[0]||"")+(n.l[0]||"")).toUpperCase();return a||((u&&u.email||"?")[0]).toUpperCase()}
+var APPLOGO='<svg class="app-logo" viewBox="0 0 96 96" aria-hidden="true"><defs><linearGradient id="alBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1e1b4b"/><stop offset="1" stop-color="#0b1020"/></linearGradient><linearGradient id="alRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset=".5" stop-color="#4ade80"/><stop offset="1" stop-color="#a78bfa"/></linearGradient><radialGradient id="alGlow" cx=".3" cy=".2" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><rect width="96" height="96" rx="24" fill="url(#alBg)"/><rect width="96" height="96" rx="24" fill="url(#alGlow)"/><ellipse cx="48" cy="48" rx="34" ry="13" transform="rotate(-28 48 48)" fill="none" stroke="url(#alRing)" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="150 60"/><path d="M37 28h13.5c7.4 0 12 3.7 12 9.4 0 3.7-2 6.4-5.2 7.6 4.1 1 6.7 4 6.7 8.4 0 6.4-5 10.6-13.2 10.6H37z" fill="#fff"/><path d="M45 34.5v7.8h4.6c2.6 0 4.1-1.4 4.1-3.9s-1.5-3.9-4.1-3.9zm0 14.2v8.8h5.2c3 0 4.7-1.6 4.7-4.4s-1.7-4.4-4.7-4.4z" fill="#1e1b4b"/><circle cx="74.5" cy="31" r="8" fill="#4ade80" opacity=".18"/><circle cx="74.5" cy="31" r="4.6" fill="#4ade80"/></svg>';
+var DEF=null;addEventListener("beforeinstallprompt",function(e){e.preventDefault();DEF=e});addEventListener("appinstalled",function(){DEF=null});
+function isStd(){return (window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true}
+function appInit(ab,ah){
+var ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+if(isStd()){ab.disabled=true;ab.textContent="Sudah terpasang";return}
+ab.onclick=function(){
+if(DEF){var d=DEF;DEF=null;d.prompt();d.userChoice.then(function(c){ah.textContent=c.outcome==="accepted"?"Terpasang. Cek layar utamamu.":"Dibatalkan."}).catch(function(){});return}
+ah.textContent=ios?"Ketuk ikon Bagikan di Safari, lalu pilih Tambah ke Layar Utama.":"Buka menu browser (titik tiga), lalu pilih Pasang aplikasi atau Tambahkan ke layar utama."}}
 function stClose(){if(stEl){stEl.remove();stEl=null}}
 function stBody(){
 var u=stUser||{},n=nm(u),box=stEl.querySelector(".st-main"),h="";var rise=(stLast!==stTab);stLast=stTab;
@@ -241,7 +259,7 @@ else if(stTab==="sec"){
 var pv=(u.app_metadata&&u.app_metadata.provider)||"email";
 h='<h2 class="st-h">Security &amp; Access</h2><div class="st-card"><div class="st-line"><div>Metode masuk<small>'+(pv==="google"?"Google":"Kode lewat email")+' · '+esc(u.email||"")+'</small></div></div>'
 +'<div class="st-line"><div>Keluar dari perangkat ini</div><button class="st-btn out" id="stOut" type="button">Log out</button></div>'
-+'<div class="st-line"><div>Keluar dari semua perangkat<small>Semua HP dan browser harus login lagi</small></div><button class="st-btn out" id="stOutAll" type="button">Log out semua</button></div></div>'}
++'<div class="st-line"><div>Keluar dari semua perangkat<small>Semua HP dan browser harus login lagi</small></div><button class="st-btn out" id="stOutAll" type="button">Log out semua</button></div></div>'+'<div class="st-card st-app"><div class="st-in app-in">'+APPLOGO+'<div class="app-tx"><h3 class="st-ct">Download aplikasi</h3><p>Pasang Bekki AI di layar utama seperti aplikasi biasa. Buka lebih cepat dan tampil layar penuh, tanpa toko aplikasi.</p><div class="app-chips"><span>Android</span><span>iPhone</span><span>Windows</span><span>Mac</span></div></div></div><div class="st-bar app-bar"><span class="st-msg app-hint" id="appHint" role="status"></span><button class="st-btn" id="appBtn" type="button">Pasang aplikasi</button></div></div>'}
 else{
 h='<h2 class="st-h">Privacy</h2><div class="st-card"><div class="st-line"><div>Hapus semua obrolan<small>Menghapus riwayat obrolan di perangkat ini</small></div><button class="st-btn out" id="stDel" type="button">Hapus</button></div>'
 +'<div class="st-line"><div>Terms</div><button class="st-btn out" id="stTerms" type="button">Buka</button></div>'
@@ -262,6 +280,7 @@ stEl.querySelector("#stWho").textContent=(f+" "+l).trim()||u.email;ms.textConten
 if(stTab==="pref"){
 var m=mode();Array.prototype.forEach.call(box.querySelectorAll(".pf-mode"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-m")===m));b.onclick=function(){setTheme(b.getAttribute("data-m"));stBody()}})}
 if(stTab==="sec"){
+appInit(g("appBtn"),g("appHint"));
 g("stOut").onclick=function(){$("pfOut").click()};
 g("stOutAll").onclick=function(){var sb=window.bekkiSB;(window.bekkiLogout?window.bekkiLogout("global"):location.replace("https://orbitxy.com/"))}}
 if(stTab==="priv"){
