@@ -188,7 +188,7 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".st-tab[aria-selected=true] svg{opacity:1}"
 +".st-main{padding:64px clamp(24px,6vw,96px) 80px;scroll-behavior:smooth}"
 +".st-main>*{max-width:760px;margin-left:auto;margin-right:auto}"
-+".st-main>.st-h,.st-main>.st-card{animation:stRise .38s cubic-bezier(.2,.8,.2,1) both}.st-main>.st-card{animation-delay:.06s}"
++".st-main.rise>.st-h,.st-main.rise>.st-card{animation:stRise .38s cubic-bezier(.2,.8,.2,1) both}.st-main.rise>.st-card{animation-delay:.06s}"
 +"@keyframes stRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}"
 +".st-h{font-size:30px;font-weight:700;letter-spacing:-.01em;margin-top:0;margin-bottom:26px}"
 +".st-card{border-radius:18px;margin-bottom:20px}"
@@ -218,7 +218,7 @@ shc:'<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 1
 x:'<svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>',
 cp:'<svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>'};
 var TABS=[["profile","Profile",SI.user],["pref","Preferences",SI.sl],["sec","Security &amp; Access",SI.sh],["priv","Privacy",SI.shc]];
-var stEl=null,stUser=null,stTab="profile";
+var stEl=null,stUser=null,stTab="profile",stLast=null;
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function nm(u){var m=(u&&u.user_metadata)||{},mail=(u&&u.email)||"";var f=m.first_name,l=m.last_name;
 if(f==null&&l==null){var full=m.full_name||m.name||(mail?mail.split("@")[0]:"");var p=String(full).split(/\s+/);f=p.shift()||"";l=p.join(" ")}
@@ -226,7 +226,7 @@ return {f:f||"",l:l||""}}
 function inis(u){var n=nm(u),a=((n.f[0]||"")+(n.l[0]||"")).toUpperCase();return a||((u&&u.email||"?")[0]).toUpperCase()}
 function stClose(){if(stEl){stEl.remove();stEl=null}}
 function stBody(){
-var u=stUser||{},n=nm(u),box=stEl.querySelector(".st-main"),h="";
+var u=stUser||{},n=nm(u),box=stEl.querySelector(".st-main"),h="";var rise=(stLast!==stTab);stLast=stTab;
 if(stTab==="profile"){
 var id=u.id||"",sid=id?id.slice(0,8)+"..."+id.slice(-7):"-";
 h='<h2 class="st-h">Profile</h2><div class="st-card"><div class="st-in"><h3 class="st-ct">Your Account</h3><div class="st-acc"><div class="st-big">'+esc(inis(u))+'</div><div class="st-f"><label for="stEm">Email</label><input id="stEm" type="email" disabled value="'+esc(u.email||"")+'"></div>'
@@ -246,7 +246,7 @@ else{
 h='<h2 class="st-h">Privacy</h2><div class="st-card"><div class="st-line"><div>Hapus semua obrolan<small>Menghapus riwayat obrolan di perangkat ini</small></div><button class="st-btn out" id="stDel" type="button">Hapus</button></div>'
 +'<div class="st-line"><div>Terms</div><button class="st-btn out" id="stTerms" type="button">Buka</button></div>'
 +'<div class="st-line"><div>Privacy policy</div><button class="st-btn out" id="stPriv" type="button">Buka</button></div></div>'}
-box.innerHTML=h;box.scrollTop=0;
+box.innerHTML=h;box.classList.toggle("rise",rise);if(rise)box.scrollTop=0;
 Array.prototype.forEach.call(stEl.querySelectorAll(".st-tab"),function(b){b.setAttribute("aria-selected",String(b.getAttribute("data-t")===stTab))});
 function g(i){return stEl.querySelector("#"+i)}
 if(stTab==="profile"){
@@ -268,7 +268,7 @@ if(stTab==="priv"){
 g("stDel").onclick=function(){stClose();var d=$("delAll");if(d)d.click()};
 g("stTerms").onclick=function(){go("terms")};g("stPriv").onclick=function(){go("privacy")}}}
 function stOpen(t){
-tutup();stClose();stTab=(typeof t==="string")?t:"profile";
+tutup();stClose();stLast=null;stTab=(typeof t==="string")?t:"profile";
 var sb=window.bekkiSB;
 var back=document.createElement("div");back.className="st-back";
 back.innerHTML='<div class="st-box" role="dialog" aria-modal="true" aria-label="Settings"><button class="st-x" id="stX" type="button" aria-label="Tutup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button>'
