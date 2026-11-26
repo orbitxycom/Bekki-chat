@@ -200,6 +200,7 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".st-btn{height:44px;padding:0 22px;border-radius:12px;transition:opacity .18s,transform .18s}.st-btn:active{transform:scale(.97)}"
 +".st-x{top:22px;right:26px;width:44px;height:44px;border-radius:50%;border:1px solid color-mix(in oklab,var(--foreground) 14%,transparent);background:color-mix(in oklab,var(--background) 55%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);box-shadow:0 4px 18px rgba(0,0,0,.10),inset 0 1px 0 rgba(255,255,255,.45);transition:transform .16s cubic-bezier(.2,.8,.2,1),background .18s,box-shadow .18s}"
 +".st-x:hover{background:color-mix(in oklab,var(--foreground) 9%,color-mix(in oklab,var(--background) 55%,transparent))}"
++".st-x svg{width:24px;height:24px;font-size:0;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;display:block;margin:auto}"
 +".st-x:active{transform:scale(.88);box-shadow:0 1px 6px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.3);background:color-mix(in oklab,var(--foreground) 14%,color-mix(in oklab,var(--background) 55%,transparent))}"
 +"@media(max-width:700px){.st-back{padding:0}.st-box{flex-direction:column;height:100dvh;max-height:none;border-radius:0}"
 +".st-side{width:auto;min-width:0;padding:max(14px,env(safe-area-inset-top)) 64px 0 16px;gap:0;border-right:0;border-bottom:1px solid color-mix(in oklab,var(--border) 70%,transparent);background:var(--background)}"
@@ -270,7 +271,7 @@ function stOpen(t){
 tutup();stClose();stTab=(typeof t==="string")?t:"profile";
 var sb=window.bekkiSB;
 var back=document.createElement("div");back.className="st-back";
-back.innerHTML='<div class="st-box" role="dialog" aria-modal="true" aria-label="Settings"><button class="st-x" id="stX" type="button" aria-label="Tutup">'+SI.x+'</button>'
+back.innerHTML='<div class="st-box" role="dialog" aria-modal="true" aria-label="Settings"><button class="st-x" id="stX" type="button" aria-label="Tutup"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button>'
 +'<div class="st-side"><div class="st-who"><span class="pf-av">?</span><span class="pf-txt"><span class="pf-name" id="stWho"></span><span class="pf-sub" id="stMail"></span></span></div><div class="st-nav" role="tablist">'
 +TABS.map(function(t){return '<button class="st-tab" role="tab" data-t="'+t[0]+'" type="button">'+t[2]+'<span>'+t[1]+'</span></button>'}).join("")
 +'</div></div><div class="st-main"></div></div>';
