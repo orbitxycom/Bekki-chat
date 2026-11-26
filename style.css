@@ -1061,3 +1061,21 @@ header #toggle2 svg{font-size:22px!important}
 .acts .vp-b:not(:disabled):hover{background:rgba(128,128,128,.14)}
 .bubble.vsw{animation:vswIn .28s ease both}
 @keyframes vswIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* kartu umpan balik harian */
+.fbp{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:22px 0 6px;padding:16px 18px;border-radius:18px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--foreground) 4%,var(--background));-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);box-shadow:0 6px 24px rgba(0,0,0,.06);animation:fbpIn .45s cubic-bezier(.2,.8,.2,1) both;transition:opacity .4s,transform .4s}
+.fbp.out{opacity:0;transform:translateY(6px)}
+.fbp-t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fbp-t b{font-size:14.5px;font-weight:600;line-height:1.35}
+.fbp-t small{font-size:12.5px;color:var(--muted-foreground,#8a8a85)}
+.fbp-b{display:flex;gap:10px;flex:none}
+.fbp-b button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--foreground);border:1px solid color-mix(in oklab,var(--foreground) 14%,transparent);background:color-mix(in oklab,var(--background) 70%,transparent);transition:transform .16s cubic-bezier(.2,.8,.2,1),background .18s,border-color .18s}
+.fbp-b button svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fbp-b button:hover{background:color-mix(in oklab,var(--foreground) 9%,transparent)}
+.fbp-b button:active{transform:scale(.86)}
+.fbp-up:hover{border-color:#4ade80}.fbp-dn:hover{border-color:#f87171}
+.fbp.done{justify-content:center;padding:18px}
+.fbp-ok{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;animation:fbpIn .35s ease both}
+.fbp-ok svg{width:18px;height:18px;fill:none;stroke:#22c55e;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+@keyframes fbpIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media(max-width:480px){.fbp{padding:14px}.fbp-b button{width:42px;height:42px}}
