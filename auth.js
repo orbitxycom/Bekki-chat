@@ -28,6 +28,8 @@ function clearSyncLocal(){SYNC.forEach(function(k){_rem.call(localStorage,k)});_
 /* tarik data akun dari server; true = halaman sedang dimuat ulang */
 function pullSync(uid){
 syncUid=uid;
+try{return pullSync2(uid)}catch(e){return Promise.resolve(false)}}
+function pullSync2(uid){
 return sb.from("bekki_data").select("data").eq("user_id",uid).maybeSingle().then(function(r){
 if(r.error){return false}
 var mk=localStorage.getItem(UK),flag=sessionStorage.getItem("bk_rl"),changed=false;
