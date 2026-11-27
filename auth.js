@@ -12,7 +12,7 @@ if(!sb){toLogin();return}
 window.bekkiSB=sb;
 
 /* ===== simpan data per AKUN (server), bukan per browser ===== */
-var SYNC=["bekki_riwayat_v2","bekki_proyek_v1","bekki_skills_v1","bekki_conn_v1","bekki_mem_v1","bekki_gi_v1","bekki_fb_v1","bekki_use_v1"],UK="bekki_uid",syncOn=false,frozen=false,syncUid=null,syncTimer=null;
+var SYNC=["bekki_riwayat_v2","bekki_proyek_v1","bekki_skills_v1","bekki_conn_v1","bekki_mem_v1","bekki_gi_v1","bekki_fb_v1","bekki_use_v1","bekki_av_v1"],UK="bekki_uid",syncOn=false,frozen=false,syncUid=null,syncTimer=null;
 var _set=Storage.prototype.setItem,_rem=Storage.prototype.removeItem;
 function isSync(st,k){return st===localStorage&&SYNC.indexOf(k)>-1}
 Storage.prototype.setItem=function(k,v){if(frozen&&isSync(this,k))return;_set.apply(this,arguments);if(syncOn&&isSync(this,k))sched()};
