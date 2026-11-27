@@ -218,7 +218,24 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".app-chips span{font-size:12px;padding:5px 12px;border-radius:999px;border:1px solid color-mix(in oklab,var(--foreground) 14%,transparent);background:color-mix(in oklab,var(--foreground) 4%,transparent)}"
 +".app-bar{gap:14px}.app-hint{flex:1;min-width:0;font-size:12.5px;line-height:1.45;color:var(--muted-foreground)}"
 +".st-btn:disabled{opacity:.55;cursor:default}"
-+"@media(max-width:700px){.app-in{flex-direction:column;gap:14px}.app-bar{flex-wrap:wrap}.app-bar .st-btn{width:100%}}";
++"@media(max-width:700px){.app-in{flex-direction:column;gap:14px}.app-bar{flex-wrap:wrap}.app-bar .st-btn{width:100%}}"
++".st-main.rise>.pf-open{animation:stRise .38s cubic-bezier(.2,.8,.2,1) both}"
++".pf-open{border:0!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important}"
++".pf-hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:8px 0 38px}"
++".pf-open .st-big{width:108px;height:108px;margin:0;border-radius:50%;font-size:36px;font-weight:600;letter-spacing:.02em;background:var(--foreground);color:var(--background);box-shadow:0 0 0 7px color-mix(in oklab,var(--foreground) 7%,transparent),0 14px 34px rgba(0,0,0,.14)}"
++".pf-hero-t b{display:block;font-size:24px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}.pf-hero-t span{font-size:14px;color:var(--muted-foreground)}"
++".pf-form{display:grid;gap:20px;max-width:520px;margin:0 auto}"
++".pf-form .st-row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}"
++".pf-open .st-f label{display:block;font-size:12.5px;font-weight:600;color:var(--muted-foreground);margin:0 0 8px 18px}"
++".pf-open .st-f input{width:100%;height:52px;padding:0 22px;border-radius:999px;font-size:15px;border:1px solid transparent;background:color-mix(in oklab,var(--foreground) 6%,transparent);transition:background .18s,border-color .18s,box-shadow .18s}"
++".pf-open .st-f input:focus{background:var(--background);border-color:var(--foreground);box-shadow:0 0 0 4px color-mix(in oklab,var(--foreground) 9%,transparent)}"
++".pf-open .st-f input:disabled{opacity:.65}"
++".pf-meta{max-width:520px;margin:30px auto 0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 6px 0 18px;height:50px;border-radius:999px;border:1px dashed color-mix(in oklab,var(--foreground) 20%,transparent);font-size:13px;color:var(--muted-foreground)}"
++".pf-meta .st-id{background:none!important;border:0!important;padding:0!important;border-radius:0!important;height:auto!important;display:inline-flex;align-items:center;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--foreground)}"
++".pf-meta .st-id button{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:0;background:color-mix(in oklab,var(--foreground) 7%,transparent);color:inherit;transition:transform .16s}.pf-meta .st-id button:active{transform:scale(.88)}"
++".pf-act{max-width:520px;margin:26px auto 0;display:flex;align-items:center;justify-content:flex-end;gap:14px}.pf-act .st-msg{flex:1;font-size:13px}"
++".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
++"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{padding-bottom:28px}}";
 var SI={
 user:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 sl:'<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
@@ -247,9 +264,11 @@ function stBody(){
 var u=stUser||{},n=nm(u),box=stEl.querySelector(".st-main"),h="";var rise=(stLast!==stTab);stLast=stTab;
 if(stTab==="profile"){
 var id=u.id||"",sid=id?id.slice(0,8)+"..."+id.slice(-7):"-";
-h='<h2 class="st-h">Profile</h2><div class="st-card"><div class="st-in"><h3 class="st-ct">Your Account</h3><div class="st-acc"><div class="st-big">'+esc(inis(u))+'</div><div class="st-f"><label for="stEm">Email</label><input id="stEm" type="email" disabled value="'+esc(u.email||"")+'"></div>'
-+'<div class="st-row2"><div class="st-f"><label for="stFn">First name</label><input id="stFn" value="'+esc(n.f)+'" maxlength="60" autocomplete="given-name"></div><div class="st-f"><label for="stLn">Last name</label><input id="stLn" value="'+esc(n.l)+'" maxlength="60" autocomplete="family-name"></div></div></div></div>'
-+'<div class="st-bar"><span class="lbl">User ID</span><span class="st-id"><button type="button" id="stCp" aria-label="Salin">'+SI.cp+'</button><span>'+esc(sid)+'</span></span><span class="st-msg" id="stMsg" role="status"></span><button class="st-btn" id="stSave" type="button">Update profile</button></div></div>'}
+h='<h2 class="st-h">Profile</h2><div class="st-card pf-open"><div class="pf-hero"><div class="st-big">'+esc(inis(u))+'</div><div class="pf-hero-t"><b>'+esc((n.f+" "+n.l).trim()||(u.email||"").split("@")[0])+'</b><span>'+esc(u.email||"")+'</span></div></div>'
++'<div class="pf-form"><div class="st-row2"><div class="st-f"><label for="stFn">First name</label><input id="stFn" value="'+esc(n.f)+'" maxlength="60" autocomplete="given-name"></div><div class="st-f"><label for="stLn">Last name</label><input id="stLn" value="'+esc(n.l)+'" maxlength="60" autocomplete="family-name"></div></div>'
++'<div class="st-f"><label for="stEm">Email</label><input id="stEm" type="email" disabled value="'+esc(u.email||"")+'"></div></div>'
++'<div class="pf-meta"><span class="lbl">User ID</span><span class="st-id"><span>'+esc(sid)+'</span><button type="button" id="stCp" aria-label="Salin">'+SI.cp+'</button></span></div>'
++'<div class="pf-act"><span class="st-msg" id="stMsg" role="status"></span><button class="st-btn" id="stSave" type="button">Update profile</button></div></div>'}
 else if(stTab==="pref"){
 h='<h2 class="st-h">Preferences</h2><div class="st-card"><div class="st-line"><div>Theme<small>Terang, gelap, atau ikuti sistem</small></div><div class="st-modes">'
 +'<button class="pf-mode" data-m="light" type="button" aria-label="Terang" aria-pressed="false">'+I.sun+'</button>'
