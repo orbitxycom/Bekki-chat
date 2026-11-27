@@ -250,6 +250,7 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".us-svg{width:100%;height:auto;display:block;margin:10px 0 6px;color:var(--foreground);overflow:visible}"
 +".us-ax{stroke:color-mix(in oklab,var(--foreground) 22%,transparent);stroke-width:1}.us-gr{stroke:color-mix(in oklab,var(--foreground) 10%,transparent);stroke-width:1;stroke-dasharray:3 5}"
 +".us-lim{stroke:#ef4444;stroke-width:1.6;stroke-dasharray:6 5;opacity:.85}.us-limt{fill:#ef4444;font-size:11px;font-weight:600}"
++".us-svg.hot{color:#ef4444}.us-svg.hot .us-dot.now{fill:#ef4444}"
 +".us-svg text{stroke:none!important;stroke-width:0!important;font-weight:500}.us-yt,.us-xt{fill:var(--muted-foreground);font-size:11px}"
 +".us-line{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:usDraw 1.2s cubic-bezier(.4,0,.2,1) .1s forwards}"
 +".us-area{stroke:none!important;opacity:0;animation:usFade .8s ease .7s forwards}"
@@ -283,7 +284,7 @@ if(isStd()){ab.disabled=true;ab.textContent="Sudah terpasang";return}
 ab.onclick=function(){
 if(DEF){var d=DEF;DEF=null;d.prompt();d.userChoice.then(function(c){ah.textContent=c.outcome==="accepted"?"Terpasang. Cek layar utamamu.":"Dibatalkan."}).catch(function(){});return}
 ah.textContent=ios?"Ketuk ikon Bagikan di Safari, lalu pilih Tambah ke Layar Utama.":"Buka menu browser (titik tiga), lalu pilih Pasang aplikasi atau Tambahkan ke layar utama."}}
-var BATAS=50;
+var BATAS=30;
 function dkey(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
 function usageData(){var days=[],c={},log={};
 try{log=(JSON.parse(localStorage.getItem("bekki_use_v1")||"{}")||{}).d||{}}catch(e){}
@@ -301,7 +302,7 @@ for(var i=0;i<n-1;i++){var p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min
 var c1x=p1[0]+(p2[0]-p0[0])/6,c1y=Math.min(base,Math.max(pt,p1[1]+(p2[1]-p0[1])/6)),c2x=p2[0]-(p3[0]-p1[0])/6,c2y=Math.min(base,Math.max(pt,p2[1]-(p3[1]-p1[1])/6));
 dd+=" C"+c1x.toFixed(1)+" "+c1y.toFixed(1)+","+c2x.toFixed(1)+" "+c2y.toFixed(1)+","+p2[0].toFixed(1)+" "+p2[1].toFixed(1)}
 var area=dd+" L"+P[n-1][0].toFixed(1)+" "+base+" L"+P[0][0].toFixed(1)+" "+base+" Z",ly=Y(BATAS).toFixed(1);
-var svg='<svg class="us-svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Grafik pemakaian 14 hari"><defs><linearGradient id="usA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>'
+var svg='<svg class="us-svg'+(near?" hot":"")+'" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Grafik pemakaian 14 hari"><defs><linearGradient id="usA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="currentColor" stop-opacity=".22"/><stop offset="1" stop-color="currentColor" stop-opacity="0"/></linearGradient></defs>'
 +'<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+base+'" y2="'+base+'" class="us-ax"/><line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(BATAS/2).toFixed(1)+'" y2="'+Y(BATAS/2).toFixed(1)+'" class="us-gr"/>'
 +'<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+ly+'" y2="'+ly+'" class="us-lim"/><text x="'+(W-pr)+'" y="'+(parseFloat(ly)-6)+'" text-anchor="end" class="us-limt">Batas '+BATAS+'</text>'
 +'<text x="'+(pl-8)+'" y="'+(base+4)+'" text-anchor="end" class="us-yt">0</text>'
