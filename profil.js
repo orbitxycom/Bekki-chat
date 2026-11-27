@@ -133,7 +133,7 @@ var m=(u&&u.user_metadata)||{},mail=(u&&u.email)||"";
 var nama=m.full_name||((m.first_name||m.last_name)?((m.first_name||"")+" "+(m.last_name||"")).trim():"")||m.name||(mail?mail.split("@")[0]:"Akun saya");try{var fn=String(nama||"").trim().split(/\s+/)[0]||"";if(fn&&fn!=="Akun"){window.bekkiName=fn;window.bekkiGreet&&window.bekkiGreet()}}catch(e){}
 var w=String(nama).replace(/[._-]+/g," ").trim().split(/\s+/);
 var ini=(w.length>1?w[0][0]+w[1][0]:String(nama).replace(/[^A-Za-z0-9]/g,"").slice(0,2)||"?").toUpperCase();
-var foto=m.avatar_url||m.picture||"";if(!/^https:\/\//i.test(foto))foto="";["pfAv","pfAv2"].forEach(function(id){var e=$(id);e.textContent=ini;e.style.backgroundImage=foto?"url(\""+foto.replace(/["\\()\s]/g,encodeURIComponent)+"\")":"";e.style.backgroundSize="cover";e.style.backgroundPosition="center";e.style.color=foto?"transparent":""});
+var foto=m.avatar_url||m.picture||"";setTimeout(applyAv,0);if(!/^https:\/\//i.test(foto))foto="";["pfAv","pfAv2"].forEach(function(id){var e=$(id);e.textContent=ini;e.style.backgroundImage=foto?"url(\""+foto.replace(/["\\()\s]/g,encodeURIComponent)+"\")":"";e.style.backgroundSize="cover";e.style.backgroundPosition="center";e.style.color=foto?"transparent":""});
 $("pfName").textContent=nama;$("pfName2").textContent=nama;$("pfMail").textContent=mail;
 $("pfSub").textContent=mail||"Akun saya"}
 /* ===== Jendela Settings ===== */
@@ -259,6 +259,13 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".us-note{margin:14px 0 0;font-size:12px;line-height:1.5;color:var(--muted-foreground)}"
 +"@keyframes usDraw{to{stroke-dashoffset:0}}@keyframes usFade{to{opacity:1}}@keyframes usPop{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:scale(1)}}@keyframes usGrow{from{transform:scaleX(0)}}@keyframes usPulse{0%,100%{opacity:1}50%{opacity:.55}}"
 +"@media(max-width:700px){.us-tiles{grid-template-columns:repeat(2,1fr)}.us-head{flex-wrap:wrap}}"
++".pf-avw{position:relative;flex:none;display:block}"
++".pf-edit{position:absolute;right:-4px;bottom:-4px;width:38px;height:38px;padding:0;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:var(--foreground);border:1px solid color-mix(in oklab,var(--foreground) 18%,transparent);background:color-mix(in oklab,var(--background) 50%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.8);backdrop-filter:blur(14px) saturate(1.8);box-shadow:0 6px 18px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.55);transition:transform .16s cubic-bezier(.2,.8,.2,1),background .18s}"
++".pf-edit svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}"
++".pf-edit:hover{background:color-mix(in oklab,var(--background) 30%,transparent)}.pf-edit:hover svg{transform:rotate(-12deg)}"
++".pf-edit:active{transform:scale(.8)}.pf-edit.tap{animation:pfTap .5s ease-out}"
++"@keyframes pfTap{0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--foreground) 38%,transparent),0 6px 18px rgba(0,0,0,.2)}100%{box-shadow:0 0 0 14px transparent,0 6px 18px rgba(0,0,0,.2)}}"
++"@media(max-width:700px){.pf-edit{width:30px;height:30px;right:-6px;bottom:-6px}.pf-edit svg{width:15px;height:15px}}"
 +".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
 +"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:2px;margin-bottom:18px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}";
 var SI={
@@ -317,12 +324,14 @@ return '<div class="st-card us-card'+(full?" us-still":"")+'"><div class="st-in"
 +svg
 +'<div class="us-tiles"><div><small>Hari ini</small><b>'+today+'</b></div><div><small>7 hari</small><b>'+sum7+'</b></div><div><small>Rata-rata/hari</small><b>'+(tot/n).toFixed(1).replace(/\.0$/,"")+'</b></div><div><small>Tertinggi</small><b>'+mx+'</b></div></div>'
 +'<p class="us-note">Dihitung dari pesan yang kamu kirim di akun ini selama 14 hari terakhir. Batas harian hanya sebagai panduan.</p></div></div>'}
+function applyAv(){var a="";try{a=localStorage.getItem("bekki_av_v1")||""}catch(e){}if(!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(a))return;
+Array.prototype.forEach.call(document.querySelectorAll("#pfAv,#pfAv2,.st-who .pf-av,.st-big"),function(e){e.style.backgroundImage='url("'+a+'")';e.style.backgroundSize="cover";e.style.backgroundPosition="center";e.style.color="transparent"})}
 function stClose(){if(stEl){stEl.remove();stEl=null}}
 function stBody(){
 var u=stUser||{},n=nm(u),box=stEl.querySelector(".st-main"),h="";var rise=(stLast!==stTab);stLast=stTab;
 if(stTab==="profile"){
 var id=u.id||"",sid=id?id.slice(0,8)+"..."+id.slice(-7):"-";
-h='<h2 class="st-h">Profile</h2><div class="st-card pf-open"><div class="pf-hero"><div class="st-big">'+esc(inis(u))+'</div><div class="pf-hero-t"><b>'+esc((n.f+" "+n.l).trim()||(u.email||"").split("@")[0])+'</b><span>'+esc(u.email||"")+'</span></div></div>'
+h='<h2 class="st-h">Profile</h2><div class="st-card pf-open"><div class="pf-hero"><div class="pf-avw"><div class="st-big">'+esc(inis(u))+'</div><button type="button" class="pf-edit" id="stEdit" aria-label="Ganti foto profil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button><input type="file" id="stFile" accept="image/*" hidden></div><div class="pf-hero-t"><b>'+esc((n.f+" "+n.l).trim()||(u.email||"").split("@")[0])+'</b><span>'+esc(u.email||"")+'</span></div></div>'
 +'<div class="pf-form"><div class="st-row2"><div class="st-f"><label for="stFn">First name</label><input id="stFn" value="'+esc(n.f)+'" maxlength="60" autocomplete="given-name"></div><div class="st-f"><label for="stLn">Last name</label><input id="stLn" value="'+esc(n.l)+'" maxlength="60" autocomplete="family-name"></div></div>'
 +'<div class="st-f"><label for="stEm">Email</label><input id="stEm" type="email" disabled value="'+esc(u.email||"")+'"></div></div>'
 +'<div class="pf-meta"><span class="lbl">User ID</span><span class="st-id"><span>'+esc(sid)+'</span><button type="button" id="stCp" aria-label="Salin">'+SI.cp+'</button></span></div>'
@@ -341,10 +350,14 @@ else{
 h='<h2 class="st-h">Privacy</h2><div class="st-card"><div class="st-line"><div>Hapus semua obrolan<small>Menghapus riwayat obrolan di perangkat ini</small></div><button class="st-btn out" id="stDel" type="button">Hapus</button></div>'
 +'<div class="st-line"><div>Terms</div><button class="st-btn out" id="stTerms" type="button">Buka</button></div>'
 +'<div class="st-line"><div>Privacy policy</div><button class="st-btn out" id="stPriv" type="button">Buka</button></div></div>'}
-box.innerHTML=h;box.classList.toggle("rise",rise);if(rise)box.scrollTop=0;
+box.innerHTML=h;box.classList.toggle("rise",rise);applyAv();if(rise)box.scrollTop=0;
 Array.prototype.forEach.call(stEl.querySelectorAll(".st-tab"),function(b){b.setAttribute("aria-selected",String(b.getAttribute("data-t")===stTab))});
 function g(i){return stEl.querySelector("#"+i)}
 if(stTab==="profile"){
+g("stEdit").onclick=function(){var b=g("stEdit");b.classList.remove("tap");void b.offsetWidth;b.classList.add("tap");g("stFile").click()};
+g("stFile").onchange=function(){var f=this.files&&this.files[0];this.value="";if(!f)return;var ms=g("stMsg");if(!/^image\//.test(f.type)){ms.textContent="Pilih file gambar";return}
+var rd=new FileReader();rd.onload=function(){var im=new Image();im.onload=function(){var S=256,c=document.createElement("canvas");c.width=c.height=S;var x=c.getContext("2d"),q=Math.min(im.width,im.height);x.fillStyle="#fff";x.fillRect(0,0,S,S);x.drawImage(im,(im.width-q)/2,(im.height-q)/2,q,q,0,0,S,S);
+try{localStorage.setItem("bekki_av_v1",c.toDataURL("image/jpeg",.86))}catch(e){ms.textContent="Gagal menyimpan foto";return}applyAv();ms.textContent="Foto diperbarui"};im.onerror=function(){ms.textContent="Gambar tidak bisa dibaca"};im.src=rd.result};rd.readAsDataURL(f)};
 g("stCp").onclick=function(){try{navigator.clipboard.writeText(u.id||"");g("stMsg").textContent="Tersalin"}catch(e){}};
 g("stSave").onclick=function(){
 var f=g("stFn").value.trim(),l=g("stLn").value.trim(),sb=window.bekkiSB,bt=g("stSave"),ms=g("stMsg");
