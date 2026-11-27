@@ -234,8 +234,14 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".pf-meta .st-id{background:none!important;border:0!important;padding:0!important;border-radius:0!important;height:auto!important;display:inline-flex;align-items:center;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--foreground)}"
 +".pf-meta .st-id button{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:0;background:color-mix(in oklab,var(--foreground) 7%,transparent);color:inherit;transition:transform .16s}.pf-meta .st-id button:active{transform:scale(.88)}"
 +".pf-act{max-width:520px;margin:26px auto 0;display:flex;align-items:center;justify-content:flex-end;gap:14px}.pf-act .st-msg{flex:1;font-size:13px}"
++".pf-hero{flex-direction:row;align-items:center;text-align:left;gap:26px;padding:6px 0 30px;margin-bottom:30px;border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)}"
++".pf-open .st-big{width:96px;height:96px;font-size:32px;flex:none;box-shadow:0 0 0 5px color-mix(in oklab,var(--foreground) 7%,transparent),0 10px 26px rgba(0,0,0,.12)}"
++".pf-hero-t{min-width:0}.pf-hero-t b{font-size:26px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pf-hero-t span{display:inline-flex;align-items:center;height:28px;padding:0 12px;margin-top:6px;border-radius:999px;background:color-mix(in oklab,var(--foreground) 6%,transparent);font-size:13px}"
++".pf-form,.pf-meta,.pf-act{max-width:none;margin-left:0;margin-right:0}.pf-form{gap:22px}"
++".pf-open .st-f label{margin-left:6px}"
++".pf-meta{margin-top:26px;border-radius:16px;height:56px}.pf-act{margin-top:22px}"
 +".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
-+"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{padding-bottom:28px}}";
++"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:22px;margin-bottom:24px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}";
 var SI={
 user:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 sl:'<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
