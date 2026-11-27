@@ -246,6 +246,7 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".us-bar{position:relative;height:10px;border-radius:999px;background:color-mix(in oklab,var(--foreground) 9%,transparent);overflow:visible}.us-bar i{display:block;height:100%;border-radius:999px;background:var(--foreground);transform-origin:left;animation:usGrow .9s cubic-bezier(.2,.8,.2,1) both}"
 +".us-bar.hot i{background:var(--foreground);animation:usGrow .9s cubic-bezier(.2,.8,.2,1) both}"
 +".us-bar b{position:absolute;top:-4px;bottom:-4px;width:2px;border-radius:2px;background:#ef4444;opacity:.0}.us-bar.hot b{opacity:.9}"
++".us-still *,.us-still *::before{animation:none!important;transition:none!important}.us-still .us-line{stroke-dashoffset:0}.us-still .us-area,.us-still .us-dot{opacity:1}"
 +".us-msg{margin:10px 0 6px;font-size:13px;color:var(--muted-foreground)}.us-msg.hot{color:var(--foreground);font-weight:600}"
 +".us-svg{width:100%;height:auto;display:block;margin:10px 0 6px;color:var(--foreground);overflow:visible}"
 +".us-ax{stroke:color-mix(in oklab,var(--foreground) 22%,transparent);stroke-width:1}.us-gr{stroke:color-mix(in oklab,var(--foreground) 10%,transparent);stroke-width:1;stroke-dasharray:3 5}"
@@ -288,7 +289,7 @@ function dkey(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"
 function usageData(){var days=[],c={},log={};
 try{log=(JSON.parse(localStorage.getItem("bekki_use_v1")||"{}")||{}).d||{}}catch(e){}
 try{var r=JSON.parse(localStorage.getItem("bekki_riwayat_v2")||"{}"),ch=Array.isArray(r)?r:(r.chats||[]);ch.forEach(function(x){(x.msgs||[]).forEach(function(m){if(m.role==="assistant"&&m.t){var k=dkey(new Date(m.t));c[k]=(c[k]||0)+1}})})}catch(e){}
-for(var i=13;i>=0;i--){var d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-i);var k=dkey(d);days.push({k:k,d:d,n:Math.max(log[k]||0,c[k]||0)})}
+for(var i=13;i>=0;i--){var d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-i);var k=dkey(d);days.push({k:k,d:d,n:Math.min(BATAS,Math.max(log[k]||0,c[k]||0))})}
 return days}
 function usageHTML(){
 var D=usageData(),n=D.length,today=D[n-1].n,sum7=0,tot=0,mx=0;
@@ -311,7 +312,7 @@ svg+='<circle cx="'+P[i][0].toFixed(1)+'" cy="'+P[i][1].toFixed(1)+'" r="'+(last
 if(i===0||i===4||i===8||i===n-1)svg+='<text x="'+P[i][0].toFixed(1)+'" y="'+(H-8)+'" text-anchor="'+(i===0?'start':i===n-1?'end':'middle')+'" class="us-xt">'+(last?"Hari ini":x.d.getDate()+"/"+(x.d.getMonth()+1))+'</text>'});
 svg+='</svg>';
 var msg=full?"Batas harian tercapai.":near?"Hampir mencapai batas harian. Sisa "+(BATAS-today)+" pesan.":"Sisa "+(BATAS-today)+" pesan hari ini.";
-return '<div class="st-card us-card"><div class="st-in"><div class="us-head"><h3 class="st-ct">Usage Statistics</h3><span class="us-pill'+(near?' hot':'')+'">Hari ini '+today+' / '+BATAS+'</span></div>'
+return '<div class="st-card us-card'+(full?" us-still":"")+'"><div class="st-in"><div class="us-head"><h3 class="st-ct">Usage Statistics</h3><span class="us-pill'+(near?' hot':'')+'">Hari ini '+today+' / '+BATAS+'</span></div>'
 +'<div class="us-bar'+(near?' hot':'')+'"><i style="width:'+pct+'%"></i><b style="left:80%"></b></div><div class="us-msg'+(near?' hot':'')+'" role="status">'+msg+'</div>'
 +svg
 +'<div class="us-tiles"><div><small>Hari ini</small><b>'+today+'</b></div><div><small>7 hari</small><b>'+sum7+'</b></div><div><small>Rata-rata/hari</small><b>'+(tot/n).toFixed(1).replace(/\.0$/,"")+'</b></div><div><small>Tertinggi</small><b>'+mx+'</b></div></div>'
