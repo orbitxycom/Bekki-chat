@@ -36,6 +36,7 @@ function SRK(m){const old=document.getElementById("srk");old&&old.remove();const
 const w=document.createElement("div");w.className="dk-back";w.id="srk";
 w.innerHTML='<div class="dk-sheet" role="dialog" aria-modal="true" aria-labelledby="srT"><div class="dk-grab" aria-hidden="true"><span></span></div><h3 id="srT">Sumber web ('+L.length+')</h3><div class="src-list"></div></div>';
 document.body.appendChild(w);
+const cpb=w.querySelector(".sh-cp");cpb.onclick=()=>CPY(U()).then(()=>{cpb.textContent="Tersalin";cpb.classList.add("ok");TT("Tautan disalin");setTimeout(()=>{cpb.textContent="Salin";cpb.classList.remove("ok")},1800)});
 const sh=w.querySelector(".dk-sheet"),ls=w.querySelector(".src-list");
 L.forEach(x=>{const a=document.createElement("a");a.className="src-it";a.href=x.u;a.target="_blank";a.rel="noopener noreferrer nofollow";
 a.innerHTML='<span class="src-ic">'+SFV(x)+'</span><span class="src-tx"><b></b><small></small><em></em></span>';
@@ -165,8 +166,7 @@ if(navigator.canShare&&navigator.canShare(d)){try{await navigator.share(d)}catch
 let ok=!1;try{await navigator.clipboard.write([new ClipboardItem({"image/png":bl})]);ok=!0;TT("Gambar disalin, tempel di chat")}catch(e){}
 if(!ok){DLB(bl,"bekki.png");TT("Gambar disimpan")}
 fb&&window.open(fb,"_blank","noopener")};
-const apps=[["Salin tautan",SHI.cp,"#e5e7eb","#111",()=>CPY(U()).then(()=>TT("Tautan disalin"))],
-["WhatsApp",SHI.wa,"#25d366","#fff",()=>"https://wa.me/?text="+et+"%20"+EU()],
+const apps=[["WhatsApp",SHI.wa,"#25d366","#fff",()=>"https://wa.me/?text="+et+"%20"+EU()],
 ["Telegram",SHI.tg,"#2aabee","#fff",()=>"https://t.me/share/url?url="+EU()+"&text="+et],
 ["Facebook",SHI.fb,"#1877f2","#fff",()=>"https://www.facebook.com/sharer/sharer.php?u="+EU()],
 ["X",'<span style="font:700 20px/1 system-ui">X</span>',"#000","#fff",()=>"https://twitter.com/intent/tweet?text="+et+"&url="+EU()],
@@ -175,7 +175,7 @@ const apps=[["Salin tautan",SHI.cp,"#e5e7eb","#111",()=>CPY(U()).then(()=>TT("Ta
 ["Simpan gambar",SHI.dl,"#e5e7eb","#111",async()=>{DLB(await mkImg(ci,ti),"bekki.png");TT("Gambar disimpan")}]];
 if(navigator.share)apps.push(["Lainnya",SHI.more,"#e5e7eb","#111",()=>shareImg("")]);
 const w=document.createElement("div");w.className="dk-back";w.id="sh";
-w.innerHTML='<div class="dk-sheet sh-sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="dk-grab" aria-hidden="true"><span></span></div><h3 id="shT" class="sh-h">Bagikan percakapan</h3><p class="sh-s">Siapa pun yang memiliki tautan dapat melihat pesan sebelumnya.</p><div class="sh-wrap"><button type="button" class="sh-nav l" aria-label="Sebelumnya">'+SHI.pv+'</button><div class="sh-car">'+slides+'</div><button type="button" class="sh-nav r" aria-label="Berikutnya">'+SHI.nx+'</button></div><div class="sh-dots"><i class="on"></i><i></i><i></i></div><div class="sh-line"></div><div class="sh-apps"></div></div>';
+w.innerHTML='<div class="dk-sheet sh-sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="dk-grab" aria-hidden="true"><span></span></div><h3 id="shT" class="sh-h">Bagikan percakapan</h3><p class="sh-s">Siapa pun yang memiliki tautan dapat melihat pesan sebelumnya.</p><div class="sh-lk"><span class="sh-url">'+ES(U().replace(/^https?:\/\//,""))+'</span><button type="button" class="sh-cp">Salin</button></div><div class="sh-wrap"><button type="button" class="sh-nav l" aria-label="Sebelumnya">'+SHI.pv+'</button><div class="sh-car">'+slides+'</div><button type="button" class="sh-nav r" aria-label="Berikutnya">'+SHI.nx+'</button></div><div class="sh-dots"><i class="on"></i><i></i><i></i></div><div class="sh-line"></div><div class="sh-apps"></div></div>';
 document.body.appendChild(w);
 const sh=w.querySelector(".dk-sheet"),car=w.querySelector(".sh-car"),dots=w.querySelectorAll(".sh-dots i"),ap=w.querySelector(".sh-apps");
 let gone=!1;const cl=()=>{if(gone)return;gone=!0;document.removeEventListener("keydown",kd,!0);w.classList.add("out");sh.style.transition="transform .22s ease";sh.style.transform="translateY(105%)";setTimeout(()=>w.remove(),230)};
