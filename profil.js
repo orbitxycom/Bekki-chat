@@ -21,6 +21,7 @@ var CSS=".sb-foot{position:relative}"
 +".pf-sep{height:1px;background:color-mix(in oklab,var(--border) 80%,transparent);margin:6px 4px}"
 +".pf-item{display:flex;align-items:center;gap:12px;width:100%;height:42px;padding:0 10px;border-radius:10px;font-size:14px;color:var(--foreground);text-align:left;transition:background .15s}"
 +".pf-item:hover{background:var(--sidebar-accent)}"
++".ib-badge{flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--foreground);color:var(--background);font-size:12px;font-weight:700;display:inline-grid;place-items:center;line-height:1}.pf-item .ib-badge{margin-left:auto}.ib-badge[hidden]{display:none}"
 +".pf-item svg{font-size:18px;opacity:.85;flex:none}"
 +".pf-item .pf-r{margin-left:auto;font-size:13px;color:var(--muted-foreground)}"
 +".pf-item .pf-chev{margin-left:auto;font-size:16px;opacity:.6}"
@@ -34,6 +35,7 @@ var CSS=".sb-foot{position:relative}"
 +".pf-foot a:hover{color:var(--foreground);text-decoration:underline}"
 +".pf-toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--foreground);color:var(--background);padding:10px 16px;border-radius:10px;font-size:13px;z-index:60;animation:fade-up .2s var(--ease-spring) both}";
 var I={
+mail:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg>',
 bug:'<svg viewBox="0 0 24 24"><path d="m8 2 1.88 1.88M14.12 3.88 16 2M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9M6.53 9C4.6 8.8 3 7.1 3 5M6 13H2M3 21c0-2.1 1.7-3.9 3.8-4M20.97 5c0 2.1-1.6 3.8-3.5 4M22 13h-4M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>',
 sun:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>',
 moon:'<svg viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>',
@@ -58,7 +60,7 @@ menu.innerHTML='<div class="pf-head"><span class="pf-av" id="pfAv2">?</span><spa
 +item("pfSettings",I.gear,"Settings")
 +item("pfSecurity",I.lock,"Security &amp; Access")
 +item("pfLimits",I.up,"Tingkatkan paket")
-+item("pfSupport",I.help,"Support",I.chev)
++item("pfInbox",I.mail,"Inbox",'<span class="ib-badge" id="pfIbB" hidden></span>')
 +item("pfOut",I.out,"Log out")
 +'<div class="pf-sep"></div>'
 +'<div class="pf-modes" role="group" aria-label="Tema">'
@@ -123,7 +125,7 @@ Array.prototype.forEach.call(menu.querySelectorAll(".pf-mode"),function(b){b.onc
 $("pfSettings").onclick=function(){go("settings")};
 $("pfSecurity").onclick=function(){go("security")};
 $("pfLimits").onclick=function(){go("upgrade")};
-$("pfSupport").onclick=function(){go("support")};
+$("pfInbox").onclick=function(){tutup();stOpen("inbox")};
 $("pfTerms").onclick=function(){go("terms")};
 $("pfPrivacy").onclick=function(){go("privacy")};
 $("pfOut").onclick=function(){tutup();var sb=window.bekkiSB;(window.bekkiLogout?window.bekkiLogout("local"):location.replace("https://orbitxy.com/"))};
@@ -303,6 +305,16 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +"@media(max-width:700px){.dv-list{padding:4px 18px}.dv-bar{flex-wrap:wrap}.dv-bar .st-btn{width:100%}.dv-out{padding:0 13px}}"
 +".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
 +"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:2px;margin-bottom:18px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}"
++".ib-badge{flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--foreground);color:var(--background);font-size:12px;font-weight:700;display:inline-grid;place-items:center;line-height:1}.pf-item .ib-badge{margin-left:auto}.st-tab .ib-badge{margin-left:auto}"
++".ib-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 14px}.ib-cnt{font-size:13px;color:var(--muted-foreground)}.ib-top .st-btn[disabled]{opacity:.45;pointer-events:none}"
++".ib-list{display:flex;flex-direction:column;gap:12px}"
++".ib-card{position:relative;display:grid;grid-template-columns:auto 1fr auto;column-gap:12px;row-gap:6px;align-items:baseline;width:100%;padding:16px 18px;border-radius:18px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--foreground) 3%,transparent);text-align:left;transition:background .2s,transform .15s}"
++".ib-card:hover{background:color-mix(in oklab,var(--foreground) 6%,transparent)}.ib-card:active{transform:scale(.99)}"
++".ib-dot{width:9px;height:9px;border-radius:50%;background:var(--foreground);align-self:center;opacity:0;transform:scale(.4);transition:opacity .2s,transform .2s}.ib-card.un .ib-dot{opacity:1;transform:none}"
++".ib-t{font-size:15px;font-weight:600;min-width:0}.ib-card:not(.un) .ib-t{font-weight:500;color:var(--muted-foreground)}"
++".ib-d{font-size:12px;color:var(--muted-foreground);white-space:nowrap}"
++".ib-b{grid-column:2/4;font-size:14px;line-height:1.55;color:var(--muted-foreground)}.ib-card.un .ib-b{color:var(--foreground);opacity:.85}"
++"@media(max-width:700px){.ib-card{grid-template-columns:auto 1fr}.ib-d{grid-column:2;grid-row:2}.ib-b{grid-column:2;grid-row:3}.st-tab .ib-badge{margin-left:6px}}"
 +".st-card.lg-card{overflow:visible;position:relative;z-index:4}"
 +".lg-dd{display:none;position:relative;margin-top:14px;width:max-content;min-width:200px;max-width:100%}"
 +".lg-sel{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;height:46px;padding:0 14px 0 16px;border-radius:12px;border:1px solid color-mix(in oklab,var(--foreground) 22%,transparent);background:var(--background);color:var(--foreground);font:inherit;font-size:15px;font-weight:600;text-align:left;transition:border-color .2s,box-shadow .2s}"
@@ -324,13 +336,14 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +"@media(max-width:420px){.lg-row{grid-template-columns:1fr}}"
 +"@media(max-width:700px){.lg-dd{display:block}.lg-row{display:none}}";
 var SI={
+mail:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3.5 7.5 8.5 6 8.5-6"/></svg>',
 user:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 sl:'<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
 sh:'<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
 shc:'<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
 x:'<svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>',
 cp:'<svg viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>'};
-var TABS=[["profile","Profile",SI.user],["pref","Preferences",SI.sl],["sec","Security &amp; Access",SI.sh],["priv","Privacy",SI.shc]];
+var TABS=[["profile","Profile",SI.user],["pref","Preferences",SI.sl],["sec","Security &amp; Access",SI.sh],["inbox","Inbox",SI.mail],["priv","Privacy",SI.shc]];
 var stEl=null,stUser=null,stTab="profile",stLast=null;
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function nm(u){var m=(u&&u.user_metadata)||{},mail=(u&&u.email)||"";var f=m.first_name,l=m.last_name;
@@ -383,13 +396,24 @@ function applyAv(){var a="";try{a=localStorage.getItem("bekki_av_v1")||""}catch(
 Array.prototype.forEach.call(document.querySelectorAll("#pfAv,#pfAv2,.st-who .pf-av,.st-big"),function(e){e.style.backgroundImage='url("'+a+'")';e.style.backgroundSize="cover";e.style.backgroundPosition="center";e.style.color="transparent"})}
 var CL=[["def","Bawaan","var(--secondary)",null],["inv","Hitam / Putih","var(--foreground)","var(--background)"],["blue","Biru","linear-gradient(135deg,#3b82f6,#2563eb)","#fff"],["violet","Ungu","linear-gradient(135deg,#8b5cf6,#6d28d9)","#fff"],["pink","Pink","linear-gradient(135deg,#f472b6,#db2777)","#fff"]];
 var FSZ=[["s","Kecil",.9],["m","Normal",1],["l","Besar",1.14],["xl","Sangat besar",1.3]];
-function getPref(){try{var o=JSON.parse(localStorage.getItem("bekki_pref_v1")||"{}")||{};return{c:o.c||"def",s:o.s||"m",l:o.l||""}}catch(e){return{c:"def",s:"m",l:""}}}
+function getPref(){try{var o=JSON.parse(localStorage.getItem("bekki_pref_v1")||"{}")||{};return{c:o.c||"def",s:o.s||"m",l:o.l||"",ib:Array.isArray(o.ib)?o.ib:[]}}catch(e){return{c:"def",s:"m",l:"",ib:[]}}}
 function setPref(k,v){var o=getPref();o[k]=v;try{localStorage.setItem("bekki_pref_v1",JSON.stringify(o))}catch(e){}applyPref();if(k==="l"&&window.bkLang)window.bkLang()}
 function applyPref(){var o=getPref(),r=document.documentElement.style,c=CL.filter(function(x){return x[0]===o.c})[0],f=FSZ.filter(function(x){return x[0]===o.s})[0];
 if(!document.getElementById("bkPref")){var st=document.createElement("style");st.id="bkPref";st.textContent=".msg.user .bubble{background:var(--bk-bub,var(--secondary));color:var(--bk-bubfg,inherit);transition:background .25s}.msg .bubble{font-size:calc(13px*var(--bk-fs,1))}.msg .bubble code{font-size:calc(12px*var(--bk-fs,1))}.pv .msg{animation:none!important}";document.head.appendChild(st)}
 if(c&&c[0]!=="def"){r.setProperty("--bk-bub",c[2]);r.setProperty("--bk-bubfg",c[3])}else{r.removeProperty("--bk-bub");r.removeProperty("--bk-bubfg")}
 if(f&&f[2]!==1)r.setProperty("--bk-fs",String(f[2]));else r.removeProperty("--bk-fs")}
 applyPref();
+var IBM=[["w", "2026-11-24", {"id": ["Selamat datang di Bekki AI", "Obrolanmu kini tersimpan di akunmu dan bisa dibuka dari perangkat mana saja. Selamat mencoba!"], "en": ["Welcome to Bekki AI", "Your chats are now saved to your account and can be opened from any device. Enjoy!"], "zh": ["欢迎使用 Bekki AI", "您的对话现已保存到账号中，可在任何设备上打开。祝您使用愉快！"], "ar": ["مرحبًا بك في Bekki AI", "محادثاتك محفوظة الآن في حسابك ويمكن فتحها من أي جهاز. نتمنى لك تجربة ممتعة!"], "ru": ["Добро пожаловать в Bekki AI", "Ваши чаты теперь сохраняются в аккаунте и доступны с любого устройства. Приятного использования!"], "de": ["Willkommen bei Bekki AI", "Deine Chats werden jetzt in deinem Konto gespeichert und lassen sich auf jedem Gerät öffnen. Viel Spaß!"]}], ["f", "2026-11-27", {"id": ["Fitur baru di Settings", "Sekarang ada pilihan bahasa, warna gelembung chat, ukuran teks, dan statistik penggunaan di halaman Settings."], "en": ["New in Settings", "You can now choose a language, chat bubble color, and text size, and see usage statistics in Settings."], "zh": ["设置中的新功能", "现在可以在设置中选择语言、聊天气泡颜色和文字大小，还能查看使用统计。"], "ar": ["جديد في الإعدادات", "يمكنك الآن اختيار اللغة ولون فقاعة المحادثة وحجم النص وعرض إحصاءات الاستخدام من الإعدادات."], "ru": ["Новое в настройках", "Теперь в настройках можно выбрать язык, цвет пузыря чата и размер текста, а также посмотреть статистику использования."], "de": ["Neu in den Einstellungen", "In den Einstellungen kannst du jetzt Sprache, Farbe der Chat-Blase und Textgröße wählen und die Nutzungsstatistik ansehen."]}], ["s", "2026-11-28", {"id": ["Periksa sesi aktif", "Buka Keamanan & Akses untuk melihat perangkat yang sedang masuk ke akunmu, lalu keluarkan yang tidak kamu kenal."], "en": ["Check your active sessions", "Open Security & Access to see which devices are signed in to your account and sign out any you don't recognize."], "zh": ["检查活跃会话", "打开“安全与访问”，查看登录您账号的设备，并移除不认识的设备。"], "ar": ["تحقق من الجلسات النشطة", "افتح «الأمان والوصول» لرؤية الأجهزة المسجّلة في حسابك وأخرج أي جهاز لا تعرفه."], "ru": ["Проверьте активные сеансы", "Откройте «Безопасность и доступ», чтобы увидеть устройства, вошедшие в ваш аккаунт, и завершить сеансы незнакомых."], "de": ["Prüfe deine aktiven Sitzungen", "Öffne „Sicherheit & Zugriff“, um zu sehen, welche Geräte bei deinem Konto angemeldet sind, und melde unbekannte Geräte ab."]}]];
+function ibLang(){return getPref().l||"id"}
+function ibUnread(){var r=getPref().ib;return IBM.filter(function(m){return r.indexOf(m[0])<0}).length}
+function ibBadge(){var n=ibUnread(),b=$("pfIbB");if(b){b.textContent=n;b.hidden=!n}var t=stEl&&stEl.querySelector('.st-tab[data-t="inbox"]');if(t){var x=t.querySelector(".ib-badge");if(!n){if(x)x.remove()}else{if(!x){x=document.createElement("span");x.className="ib-badge";t.appendChild(x)}x.textContent=n}}}
+function inboxHTML(){var L=ibLang(),r=getPref().ib,LC={id:"id-ID",en:"en-US",zh:"zh-CN",ar:"ar",ru:"ru-RU",de:"de-DE"}[L]||"id-ID";
+return '<h2 class="st-h">Inbox</h2><div class="ib-top"><span class="ib-cnt">'+ibUnread()+' / '+IBM.length+'</span><button type="button" class="st-btn out" id="ibAll"'+(ibUnread()?'':' disabled')+'>Tandai semua dibaca</button></div><div class="ib-list">'
++IBM.slice().sort(function(a,b){return a[1]<b[1]?1:-1}).map(function(m){var c=m[2][L]||m[2].en,un=r.indexOf(m[0])<0,d="";try{d=new Date(m[1]+"T12:00:00").toLocaleDateString(LC,{day:"numeric",month:"long",year:"numeric"})}catch(e){}
+return '<button type="button" class="ib-card'+(un?' un':'')+'" data-i="'+m[0]+'"><i class="ib-dot"></i><span class="ib-t">'+esc(c[0])+'</span><span class="ib-d">'+esc(d)+'</span><span class="ib-b">'+esc(c[1])+'</span></button>'}).join("")+'</div>'}
+function inboxBind(box){var all=box.querySelector("#ibAll");function save(v){setPref("ib",v);stBody();ibBadge()}
+if(all)all.onclick=function(){save(IBM.map(function(m){return m[0]}))};
+Array.prototype.forEach.call(box.querySelectorAll(".ib-card"),function(b){b.onclick=function(){var id=b.getAttribute("data-i"),r=getPref().ib.slice(),i=r.indexOf(id);if(i<0)r.push(id);else r.splice(i,1);save(r)}})}
 var LDD=[["id","Bahasa Indonesia"],["en","English"],["zh","\u4e2d\u6587 (Mandarin)"],["ar","\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)"],["ru","\u0420\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)"],["de","Deutsch (German)"]];
 var LGS=[["id","ID","Bahasa Indonesia",""],["en","EN","English",""],["zh","\u4e2d","\u4e2d\u6587","Mandarin"],["ar","\u0639","\u0627\u0644\u0639\u0631\u0628\u064a\u0629","Arabic"],["ru","RU","\u0420\u0443\u0441\u0441\u043a\u0438\u0439","Russian"],["de","DE","Deutsch","German"]];
 function langHTML(){var o=getPref();return '<div class="st-card lg-card"><div class="st-in"><div class="st-ct">Bahasa</div><p class="pf-d">Bahasa tampilan dan jawaban Bekki.</p><div class="lg-row" role="radiogroup" aria-label="Bahasa">'+LGS.map(function(x){return '<button type="button" class="lg'+(x[0]===o.l?' on':'')+'" role="radio" aria-checked="'+(x[0]===o.l)+'" data-l="'+x[0]+'" lang="'+x[0]+'"><i class="lg-b">'+x[1]+'</i><span class="lg-n"><b>'+x[2]+'</b>'+(x[3]?'<small>'+x[3]+'</small>':'')+'</span><svg class="lg-ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>'}).join("")+'</div><div class="lg-dd"><button type="button" class="lg-sel" aria-haspopup="listbox" aria-expanded="false"><span class="lg-cur">'+(LDD.filter(function(x){return x[0]===(o.l||"id")})[0]||LDD[0])[1]+'</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><div class="lg-menu" role="listbox" hidden>'+LDD.map(function(x){var on=x[0]===(o.l||"id");return '<button type="button" class="lg-o'+(on?' on':'')+'" role="option" aria-selected="'+on+'" data-l="'+x[0]+'" lang="'+x[0]+'"><span>'+x[1]+'</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>'}).join("")+'</div></div></div></div></div>'}
@@ -439,12 +463,13 @@ var pv=(u.app_metadata&&u.app_metadata.provider)||"email";
 h='<h2 class="st-h">Security &amp; Access</h2><div class="st-card"><div class="st-line"><div>Metode masuk<small>'+(pv==="google"?"Google":"Kode lewat email")+' · '+esc(u.email||"")+'</small></div></div>'
 +'<div class="st-line"><div>Keluar dari perangkat ini</div><button class="st-btn out" id="stOut" type="button">Log out</button></div>'
 +'<div class="st-line"><div>Keluar dari semua perangkat<small>Semua HP dan browser harus login lagi</small></div><button class="st-btn out" id="stOutAll" type="button">Log out semua</button></div></div>'+devHTML()+'<div class="st-card st-app"><div class="st-in app-in"><div class="app-tx"><h3 class="st-ct">Download aplikasi</h3><p>Pasang Bekki AI di layar utama seperti aplikasi biasa. Buka lebih cepat dan tampil layar penuh, tanpa toko aplikasi.</p><div class="app-chips"><span>Android</span><span>iPhone</span><span>Windows</span><span>Mac</span></div></div></div><div class="st-bar app-bar"><span class="st-msg app-hint" id="appHint" role="status"></span><button class="st-btn" id="appBtn" type="button">Pasang aplikasi</button></div></div>'}
+else if(stTab==="inbox"){h=inboxHTML()}
 else{
 h='<h2 class="st-h">Privacy</h2><div class="st-card"><div class="st-line"><div>Hapus semua obrolan<small>Menghapus riwayat obrolan di perangkat ini</small></div><button class="st-btn out" id="stDel" type="button">Hapus</button></div>'
 +'<div class="st-line"><div>Terms</div><button class="st-btn out" id="stTerms" type="button">Buka</button></div>'
 +'<div class="st-line"><div>Privacy policy</div><button class="st-btn out" id="stPriv" type="button">Buka</button></div></div>'}
 box.innerHTML=h;box.classList.toggle("rise",rise);applyAv();if(rise)box.scrollTop=0;
-Array.prototype.forEach.call(stEl.querySelectorAll(".st-tab"),function(b){b.setAttribute("aria-selected",String(b.getAttribute("data-t")===stTab))});
+Array.prototype.forEach.call(stEl.querySelectorAll(".st-tab"),function(b){b.setAttribute("aria-selected",String(b.getAttribute("data-t")===stTab))});ibBadge();
 function g(i){return stEl.querySelector("#"+i)}
 if(stTab==="profile"){
 g("stEdit").onclick=function(){var b=g("stEdit");b.classList.remove("tap");void b.offsetWidth;b.classList.add("tap");g("stFile").click()};
@@ -471,6 +496,7 @@ if(stTab==="sec"){
 appInit(g("appBtn"),g("appHint"));devLoad(box);
 g("stOut").onclick=function(){$("pfOut").click()};
 g("stOutAll").onclick=function(){var sb=window.bekkiSB;(window.bekkiLogout?window.bekkiLogout("global"):location.replace("https://orbitxy.com/"))}}
+if(stTab==="inbox")inboxBind(box);
 if(stTab==="priv"){
 g("stDel").onclick=function(){stClose();var d=$("delAll");if(d)d.click()};
 g("stTerms").onclick=function(){go("terms")};g("stPriv").onclick=function(){go("privacy")}}}
@@ -517,6 +543,7 @@ var pm=/^\?([^=&]{3,})=([a-z0-9]{12,})$/i.exec(location.search);if(pm&&pm[1]!=="
 var pb=document.getElementById("pkBack");if(pb)pb.onclick=function(){pktClose()};
 var sb=window.bekkiSB;
 if(sb)sb.auth.getSession().then(function(r){isi(r&&r.data&&r.data.session?r.data.session.user:null)}).catch(function(){});
+ibBadge();
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
 })();
@@ -603,6 +630,7 @@ var E=[["Chat baru","New chat","新对话","محادثة جديدة","Новый
 ["ID Pengguna","User ID","用户 ID","معرّف المستخدم","ID пользователя","Benutzer-ID"],
 ["Tanggal bergabung","Joined on","加入日期","تاريخ الانضمام","Дата регистрации","Beigetreten am"],
 ["Wilayah akun","Account region","账号地区","منطقة الحساب","Регион аккаунта","Kontoregion"],
+["Inbox","Inbox","收件箱","صندوق الوارد","Входящие","Posteingang"],["Tandai semua dibaca","Mark all as read","全部标为已读","وضع علامة مقروء على الكل","Отметить все как прочитанные","Alle als gelesen markieren"],
 ["Perbarui profil","Update profile","更新资料","تحديث الملف","Обновить профиль","Profil aktualisieren"],
 ["Ganti foto profil","Change profile photo","更换头像","تغيير صورة الملف","Сменить фото профиля","Profilfoto ändern"],
 ["Statistik Penggunaan","Usage Statistics","使用统计","إحصاءات الاستخدام","Статистика использования","Nutzungsstatistik"],
