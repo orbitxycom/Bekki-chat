@@ -234,13 +234,16 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".pf-meta{max-width:520px;margin:30px auto 0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 6px 0 18px;height:50px;border-radius:999px;border:1px dashed color-mix(in oklab,var(--foreground) 20%,transparent);font-size:13px;color:var(--muted-foreground)}"
 +".pf-meta .st-id{background:none!important;border:0!important;padding:0!important;border-radius:0!important;height:auto!important;display:inline-flex;align-items:center;gap:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--foreground)}"
 +".pf-meta .st-id button{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;border:0;background:color-mix(in oklab,var(--foreground) 7%,transparent);color:inherit;transition:transform .16s}.pf-meta .st-id button:active{transform:scale(.88)}"
++".pf-join{margin-top:22px}"
++".pf-join .lbl{display:inline-flex;align-items:center;gap:9px}.pf-join .lbl svg{width:17px;height:17px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;opacity:.85}"
++".pf-jv{padding-right:12px;font-size:14px;font-weight:600;color:var(--foreground);white-space:nowrap}"
 +".pf-act{max-width:520px;margin:26px auto 0;display:flex;align-items:center;justify-content:flex-end;gap:14px}.pf-act .st-msg{flex:1;font-size:13px}"
 +".pf-hero{flex-direction:row;align-items:center;text-align:left;gap:26px;padding:6px 0 4px;margin-bottom:24px;border-bottom:0}"
 +".pf-open .st-big{width:96px;height:96px;font-size:32px;flex:none;box-shadow:0 0 0 5px color-mix(in oklab,var(--foreground) 7%,transparent),0 10px 26px rgba(0,0,0,.12)}"
 +".pf-hero-t{min-width:0}.pf-hero-t b{font-size:26px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pf-hero-t span{display:inline-flex;align-items:center;height:28px;padding:0 12px;margin-top:6px;border-radius:999px;background:color-mix(in oklab,var(--foreground) 6%,transparent);font-size:13px}"
 +".pf-form,.pf-meta,.pf-act{max-width:none;margin-left:0;margin-right:0}.pf-form{gap:22px}"
 +".pf-open .st-f label{margin-left:6px}"
-+".pf-meta{margin-top:26px;border-radius:16px;height:56px}.pf-act{margin-top:22px}"
++".pf-meta{margin-top:26px;border-radius:16px;height:56px}.pf-join{margin-top:22px}.pf-act{margin-top:22px}"
 +".us-card{margin-top:22px}.us-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.us-head .st-ct{margin:0}"
 +".us-pill{font-size:12.5px;font-weight:600;padding:5px 12px;border-radius:999px;background:color-mix(in oklab,var(--foreground) 7%,transparent);white-space:nowrap}.us-pill.hot{background:var(--foreground);color:var(--background)}"
 +".us-bar{position:relative;height:10px;border-radius:999px;background:color-mix(in oklab,var(--foreground) 9%,transparent);overflow:visible}.us-bar i{display:block;height:100%;border-radius:999px;background:var(--foreground);transform-origin:left;animation:usGrow .9s cubic-bezier(.2,.8,.2,1) both}"
@@ -416,12 +419,14 @@ function stClose(){if(stEl){stEl.remove();stEl=null}}
 function stBody(){
 var u=stUser||{},n=nm(u),box=stEl.querySelector(".st-main"),h="";var rise=(stLast!==stTab);stLast=stTab;
 if(stTab==="profile"){
-var id=u.id||"",sid=id?id.slice(0,8)+"..."+id.slice(-7):"-";
+var id=u.id||"",sid=id?id.slice(0,8)+"..."+id.slice(-7):"-";var jd="";try{if(u.created_at){var LC={id:"id-ID",en:"en-US",zh:"zh-CN",ar:"ar",ru:"ru-RU",de:"de-DE"},lg=getPref().l||"id";jd=new Date(u.created_at).toLocaleDateString(LC[lg]||"id-ID",{day:"numeric",month:"long",year:"numeric"})}}catch(e){}
 h='<h2 class="st-h">Profile</h2><div class="st-card pf-open"><div class="pf-hero"><div class="pf-avw"><div class="st-big">'+esc(inis(u))+'</div><button type="button" class="pf-edit" id="stEdit" aria-label="Ganti foto profil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></button><input type="file" id="stFile" accept="image/*" hidden></div><div class="pf-hero-t"><b>'+esc((n.f+" "+n.l).trim()||(u.email||"").split("@")[0])+'</b><span>'+esc(u.email||"")+'</span></div></div>'
 +'<div class="pf-form"><div class="st-row2"><div class="st-f"><label for="stFn">First name</label><input id="stFn" value="'+esc(n.f)+'" maxlength="60" autocomplete="given-name"></div><div class="st-f"><label for="stLn">Last name</label><input id="stLn" value="'+esc(n.l)+'" maxlength="60" autocomplete="family-name"></div></div>'
 +'<div class="st-f"><label for="stEm">Email</label><input id="stEm" type="email" disabled value="'+esc(u.email||"")+'"></div></div>'
-+'<div class="pf-meta"><span class="lbl">User ID</span><span class="st-id"><span>'+esc(sid)+'</span><button type="button" id="stCp" aria-label="Salin">'+SI.cp+'</button></span></div>'
-+'<div class="pf-act"><span class="st-msg" id="stMsg" role="status"></span><button class="st-btn" id="stSave" type="button">Update profile</button></div></div>'+usageHTML()}
++'<div class="pf-meta pf-uid"><span class="lbl">User ID</span><span class="st-id"><span>'+esc(sid)+'</span><button type="button" id="stCp" aria-label="Salin">'+SI.cp+'</button></span></div>'
++'<div class="pf-act"><span class="st-msg" id="stMsg" role="status"></span><button class="st-btn" id="stSave" type="button">Update profile</button></div>'
++(jd?'<div class="pf-meta pf-join"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Tanggal bergabung</span></span><span class="pf-jv">'+esc(jd)+'</span></div>':'')
++'</div>'+usageHTML()}
 else if(stTab==="pref"){
 h='<h2 class="st-h">Preferences</h2><div class="st-card"><div class="st-line"><div>Theme<small>Terang, gelap, atau ikuti sistem</small></div><div class="st-modes">'
 +'<button class="pf-mode" data-m="light" type="button" aria-label="Terang" aria-pressed="false">'+I.sun+'</button>'
@@ -594,6 +599,7 @@ var E=[["Chat baru","New chat","新对话","محادثة جديدة","Новый
 ["Nama depan","First name","名","الاسم الأول","Имя","Vorname"],
 ["Nama belakang","Last name","姓","اسم العائلة","Фамилия","Nachname"],
 ["ID Pengguna","User ID","用户 ID","معرّف المستخدم","ID пользователя","Benutzer-ID"],
+["Tanggal bergabung","Joined on","加入日期","تاريخ الانضمام","Дата регистрации","Beigetreten am"],
 ["Perbarui profil","Update profile","更新资料","تحديث الملف","Обновить профиль","Profil aktualisieren"],
 ["Ganti foto profil","Change profile photo","更换头像","تغيير صورة الملف","Сменить фото профиля","Profilfoto ändern"],
 ["Statistik Penggunaan","Usage Statistics","使用统计","إحصاءات الاستخدام","Статистика использования","Nutzungsstatistik"],
