@@ -279,6 +279,24 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".fs span{font-size:11.5px;opacity:.75;white-space:nowrap}.fs b{font-weight:600;line-height:1}"
 +".fs.on{background:var(--foreground);color:var(--background);border-color:transparent}.fs.on span{opacity:.9}.fs:active{transform:scale(.94)}"
 +"@media(max-width:700px){.fs-row{gap:8px}.fs span{font-size:10.5px}.sw-row{gap:12px}}"
++".dv-head{padding-bottom:4px}.dv-head .st-ct{margin-bottom:6px}.dv-head p{margin:0;font-size:14px;line-height:1.55;color:var(--muted-foreground)}"
++".dv-list{padding:6px 26px 4px}.dv-empty{padding:18px 0;font-size:14px;color:var(--muted-foreground)}"
++".dv-row{display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid color-mix(in oklab,var(--foreground) 9%,transparent);overflow:hidden;max-height:90px;animation:dvIn .4s cubic-bezier(.2,.8,.2,1) both;transition:max-height .32s ease,opacity .3s,padding .32s,transform .3s}"
++".dv-row:first-child{border-top:0}.dv-row.gone{max-height:0;opacity:0;padding-top:0;padding-bottom:0;transform:translateX(24px)}"
++"@keyframes dvIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}"
++".dv-ic{width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;background:color-mix(in oklab,var(--foreground) 6%,transparent);border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)}"
++".dv-ic svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}"
++".dv-tx{flex:1;min-width:0}.dv-tx b{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:15px;font-weight:600}"
++".dv-tx em{font-style:normal;font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--foreground);color:var(--background)}"
++".dv-tx small{display:flex;align-items:center;gap:7px;margin-top:4px;font-size:12.5px;color:var(--muted-foreground)}"
++".dv-dot{width:7px;height:7px;border-radius:50%;background:color-mix(in oklab,var(--foreground) 30%,transparent)}.dv-dot.live{background:var(--foreground);animation:dvPulse 1.8s ease-in-out infinite}"
++"@keyframes dvPulse{0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--foreground) 40%,transparent)}100%{box-shadow:0 0 0 7px transparent}}"
++".dv-out{flex:none;height:38px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:500;color:var(--foreground);background:transparent;border:1px solid color-mix(in oklab,var(--foreground) 20%,transparent);cursor:pointer;transition:transform .16s cubic-bezier(.2,.8,.2,1),background .18s}"
++".dv-out:hover{background:color-mix(in oklab,var(--foreground) 7%,transparent)}.dv-out:active{transform:scale(.9)}.dv-out:disabled{opacity:.5}"
++".dv-sk{height:46px;margin:14px 0;border-radius:14px;background:linear-gradient(90deg,color-mix(in oklab,var(--foreground) 5%,transparent),color-mix(in oklab,var(--foreground) 10%,transparent),color-mix(in oklab,var(--foreground) 5%,transparent));background-size:200% 100%;animation:dvSk 1.2s linear infinite}"
++"@keyframes dvSk{to{background-position:-200% 0}}"
++".dv-bar{gap:14px;justify-content:space-between}.dv-bar .st-msg{flex:1;min-width:0;font-size:12.5px}.dv-bar .st-btn:disabled{opacity:.45;cursor:default}"
++"@media(max-width:700px){.dv-list{padding:4px 18px}.dv-bar{flex-wrap:wrap}.dv-bar .st-btn{width:100%}.dv-out{padding:0 13px}}"
 +".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
 +"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:2px;margin-bottom:18px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}";
 var SI={
@@ -354,6 +372,23 @@ return '<div class="st-card pv-card"><div class="st-in"><div class="pv-t">Pratin
 +CL.map(function(x){return '<button type="button" class="sw'+(x[0]===o.c?' on':'')+(x[0]==="def"?' def':'')+'" role="radio" aria-checked="'+(x[0]===o.c)+'" data-c="'+x[0]+'" aria-label="'+x[1]+'" title="'+x[1]+'" style="--c:'+x[2]+'"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>'}).join("")+'</div></div></div>'
 +'<div class="st-card"><div class="st-in"><div class="st-ct">Ukuran teks</div><p class="pf-d">Ukuran tulisan di dalam chat.</p><div class="fs-row" role="radiogroup" aria-label="Ukuran teks">'
 +FSZ.map(function(x,i){return '<button type="button" class="fs'+(x[0]===o.s?' on':'')+'" role="radio" aria-checked="'+(x[0]===o.s)+'" data-s="'+x[0]+'"><b style="font-size:'+(13+i*3)+'px">Aa</b><span>'+x[1]+'</span></button>'}).join("")+'</div></div></div>'}
+var DVI={mobile:'<svg viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg>',tablet:'<svg viewBox="0 0 24 24"><rect x="4.5" y="3" width="15" height="18" rx="2.5"/><path d="M11 17.5h2"/></svg>',desktop:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>'};
+function relT(ts){var s=Math.max(0,(Date.now()-new Date(ts).getTime())/1000);if(s<300)return"Aktif sekarang";var m=Math.round(s/60);if(m<60)return"Aktif "+m+" menit lalu";var h=Math.round(m/60);if(h<24)return"Aktif "+h+" jam lalu";return"Aktif "+Math.round(h/24)+" hari lalu"}
+function devHTML(){return '<div class="st-card dv-card"><div class="st-in dv-head"><h3 class="st-ct">Sesi aktif</h3><p>Perangkat yang sedang masuk ke akunmu. Keluarkan yang tidak kamu kenal.</p></div><div id="dvList" class="dv-list"><div class="dv-sk"></div><div class="dv-sk"></div></div><div class="st-bar dv-bar"><span class="st-msg" id="dvMsg" role="status"></span><button class="st-btn" id="dvAll" type="button" disabled>Keluarkan semua perangkat lain</button></div></div>'}
+function devLoad(box){var sb=window.bekkiSB,list=box.querySelector("#dvList"),all=box.querySelector("#dvAll"),msg=box.querySelector("#dvMsg");if(!list)return;
+var uid=stUser&&stUser.id,me=window.bekkiDevId?window.bekkiDevId():"";
+if(!sb||!uid){list.innerHTML='<div class="dv-empty">Belum tersedia.</div>';return}
+function render(rows){rows.sort(function(a,b){return(b.id===me)-(a.id===me)||new Date(b.last_seen)-new Date(a.last_seen)});
+if(!rows.length){list.innerHTML='<div class="dv-empty">Belum ada perangkat tercatat.</div>';all.disabled=true;return}
+list.innerHTML=rows.map(function(r,i){var mine=r.id===me,live=(Date.now()-new Date(r.last_seen).getTime())<3e5;
+return '<div class="dv-row" data-id="'+esc(r.id)+'" style="animation-delay:'+(i*.06)+'s"><div class="dv-ic">'+(DVI[r.kind]||DVI.desktop)+'</div><div class="dv-tx"><b>'+esc(r.name||"Perangkat")+(mine?'<em>Perangkat ini</em>':'')+'</b><small><i class="dv-dot'+(live?' live':'')+'"></i>'+(mine?"Aktif sekarang":relT(r.last_seen))+'</small></div>'+(mine?'':'<button type="button" class="dv-out">Keluarkan</button>')+'</div>'}).join("");
+all.disabled=rows.length<2;
+Array.prototype.forEach.call(list.querySelectorAll(".dv-out"),function(b){b.onclick=function(){var row=b.closest(".dv-row"),id=row.getAttribute("data-id");b.disabled=true;b.textContent="Mengeluarkan...";
+sb.from("bekki_devices").delete().eq("user_id",uid).eq("id",id).then(function(r){if(r&&r.error){b.disabled=false;b.textContent="Keluarkan";msg.textContent="Gagal mengeluarkan";return}
+row.classList.add("gone");setTimeout(function(){row.remove();var n=list.querySelectorAll(".dv-row").length;all.disabled=n<2;msg.textContent="Perangkat dikeluarkan. Ia akan keluar dalam beberapa menit."},320)})}})}
+sb.from("bekki_devices").select("*").eq("user_id",uid).then(function(r){if(r.error){list.innerHTML='<div class="dv-empty">Fitur ini belum diaktifkan.</div>';return}render(r.data||[])},function(){list.innerHTML='<div class="dv-empty">Tidak bisa memuat perangkat.</div>'});
+all.onclick=function(){all.disabled=true;sb.from("bekki_devices").delete().eq("user_id",uid).neq("id",me).then(function(r){if(r&&r.error){all.disabled=false;msg.textContent="Gagal";return}
+Array.prototype.forEach.call(list.querySelectorAll(".dv-row"),function(row){if(row.getAttribute("data-id")!==me)row.classList.add("gone")});setTimeout(function(){Array.prototype.forEach.call(list.querySelectorAll(".dv-row.gone"),function(x){x.remove()})},320);msg.textContent="Semua perangkat lain dikeluarkan."})}}
 function stClose(){if(stEl){stEl.remove();stEl=null}}
 function stBody(){
 var u=stUser||{},n=nm(u),box=stEl.querySelector(".st-main"),h="";var rise=(stLast!==stTab);stLast=stTab;
@@ -373,7 +408,7 @@ else if(stTab==="sec"){
 var pv=(u.app_metadata&&u.app_metadata.provider)||"email";
 h='<h2 class="st-h">Security &amp; Access</h2><div class="st-card"><div class="st-line"><div>Metode masuk<small>'+(pv==="google"?"Google":"Kode lewat email")+' · '+esc(u.email||"")+'</small></div></div>'
 +'<div class="st-line"><div>Keluar dari perangkat ini</div><button class="st-btn out" id="stOut" type="button">Log out</button></div>'
-+'<div class="st-line"><div>Keluar dari semua perangkat<small>Semua HP dan browser harus login lagi</small></div><button class="st-btn out" id="stOutAll" type="button">Log out semua</button></div></div>'+'<div class="st-card st-app"><div class="st-in app-in"><div class="app-tx"><h3 class="st-ct">Download aplikasi</h3><p>Pasang Bekki AI di layar utama seperti aplikasi biasa. Buka lebih cepat dan tampil layar penuh, tanpa toko aplikasi.</p><div class="app-chips"><span>Android</span><span>iPhone</span><span>Windows</span><span>Mac</span></div></div></div><div class="st-bar app-bar"><span class="st-msg app-hint" id="appHint" role="status"></span><button class="st-btn" id="appBtn" type="button">Pasang aplikasi</button></div></div>'}
++'<div class="st-line"><div>Keluar dari semua perangkat<small>Semua HP dan browser harus login lagi</small></div><button class="st-btn out" id="stOutAll" type="button">Log out semua</button></div></div>'+devHTML()+'<div class="st-card st-app"><div class="st-in app-in"><div class="app-tx"><h3 class="st-ct">Download aplikasi</h3><p>Pasang Bekki AI di layar utama seperti aplikasi biasa. Buka lebih cepat dan tampil layar penuh, tanpa toko aplikasi.</p><div class="app-chips"><span>Android</span><span>iPhone</span><span>Windows</span><span>Mac</span></div></div></div><div class="st-bar app-bar"><span class="st-msg app-hint" id="appHint" role="status"></span><button class="st-btn" id="appBtn" type="button">Pasang aplikasi</button></div></div>'}
 else{
 h='<h2 class="st-h">Privacy</h2><div class="st-card"><div class="st-line"><div>Hapus semua obrolan<small>Menghapus riwayat obrolan di perangkat ini</small></div><button class="st-btn out" id="stDel" type="button">Hapus</button></div>'
 +'<div class="st-line"><div>Terms</div><button class="st-btn out" id="stTerms" type="button">Buka</button></div>'
@@ -399,7 +434,7 @@ if(stTab==="pref"){
 var m=mode();Array.prototype.forEach.call(box.querySelectorAll(".pf-mode"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-m")===m));b.onclick=function(){setTheme(b.getAttribute("data-m"));stBody()}})}
 if(stTab==="pref"){Array.prototype.forEach.call(box.querySelectorAll(".sw"),function(b){b.onclick=function(){setPref("c",b.getAttribute("data-c"));stBody()}});Array.prototype.forEach.call(box.querySelectorAll(".fs"),function(b){b.onclick=function(){setPref("s",b.getAttribute("data-s"));stBody()}})}
 if(stTab==="sec"){
-appInit(g("appBtn"),g("appHint"));
+appInit(g("appBtn"),g("appHint"));devLoad(box);
 g("stOut").onclick=function(){$("pfOut").click()};
 g("stOutAll").onclick=function(){var sb=window.bekkiSB;(window.bekkiLogout?window.bekkiLogout("global"):location.replace("https://orbitxy.com/"))}}
 if(stTab==="priv"){
