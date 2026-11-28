@@ -266,6 +266,19 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".pf-edit:active{transform:scale(.8)}.pf-edit.tap{animation:pfTap .5s ease-out}"
 +"@keyframes pfTap{0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--foreground) 38%,transparent),0 6px 18px rgba(0,0,0,.2)}100%{box-shadow:0 0 0 14px transparent,0 6px 18px rgba(0,0,0,.2)}}"
 +"@media(max-width:700px){.pf-edit{width:30px;height:30px;right:-6px;bottom:-6px}.pf-edit svg{width:15px;height:15px}}"
++".pv-t{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:14px}"
++".pv{display:flex;flex-direction:column;gap:12px}.pv .msg.user{justify-content:flex-end}.pv .msg{display:flex}"
++".pf-d{margin:-8px 0 16px;font-size:13.5px;color:var(--muted-foreground)}"
++".sw-row{display:flex;gap:14px;flex-wrap:wrap}"
++".sw{position:relative;width:46px;height:46px;border-radius:50%;padding:0;border:2px solid transparent;background:var(--c);cursor:pointer;display:grid;place-items:center;box-shadow:0 0 0 1px color-mix(in oklab,var(--foreground) 14%,transparent);transition:transform .16s cubic-bezier(.2,.8,.2,1),box-shadow .2s}"
++".sw svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;opacity:0;transform:scale(.4);transition:opacity .2s,transform .25s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}"
++".sw[data-c=inv] svg{stroke:var(--background);filter:none}.sw.def svg{stroke:var(--foreground);filter:none}"
++".sw.on{box-shadow:0 0 0 2px var(--background),0 0 0 4px var(--foreground)}.sw.on svg{opacity:1;transform:none}.sw:active{transform:scale(.86)}"
++".fs-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}"
++".fs{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:76px;padding:8px 4px;border-radius:16px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--foreground) 4%,transparent);color:var(--foreground);cursor:pointer;transition:transform .16s cubic-bezier(.2,.8,.2,1),background .2s,color .2s}"
++".fs span{font-size:11.5px;opacity:.75;white-space:nowrap}.fs b{font-weight:600;line-height:1}"
++".fs.on{background:var(--foreground);color:var(--background);border-color:transparent}.fs.on span{opacity:.9}.fs:active{transform:scale(.94)}"
++"@media(max-width:700px){.fs-row{gap:8px}.fs span{font-size:10.5px}.sw-row{gap:12px}}"
 +".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
 +"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:2px;margin-bottom:18px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}";
 var SI={
@@ -326,6 +339,21 @@ return '<div class="st-card us-card'+(full?" us-still":"")+'"><div class="st-in"
 +'<p class="us-note">Dihitung dari pesan yang kamu kirim di akun ini selama 14 hari terakhir. Batas harian hanya sebagai panduan.</p></div></div>'}
 function applyAv(){var a="";try{a=localStorage.getItem("bekki_av_v1")||""}catch(e){}if(!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(a))return;
 Array.prototype.forEach.call(document.querySelectorAll("#pfAv,#pfAv2,.st-who .pf-av,.st-big"),function(e){e.style.backgroundImage='url("'+a+'")';e.style.backgroundSize="cover";e.style.backgroundPosition="center";e.style.color="transparent"})}
+var CL=[["def","Bawaan","var(--secondary)",null],["inv","Hitam / Putih","var(--foreground)","var(--background)"],["blue","Biru","linear-gradient(135deg,#3b82f6,#2563eb)","#fff"],["violet","Ungu","linear-gradient(135deg,#8b5cf6,#6d28d9)","#fff"],["pink","Pink","linear-gradient(135deg,#f472b6,#db2777)","#fff"]];
+var FSZ=[["s","Kecil",.9],["m","Normal",1],["l","Besar",1.14],["xl","Sangat besar",1.3]];
+function getPref(){try{var o=JSON.parse(localStorage.getItem("bekki_pref_v1")||"{}")||{};return{c:o.c||"def",s:o.s||"m"}}catch(e){return{c:"def",s:"m"}}}
+function setPref(k,v){var o=getPref();o[k]=v;try{localStorage.setItem("bekki_pref_v1",JSON.stringify(o))}catch(e){}applyPref()}
+function applyPref(){var o=getPref(),r=document.documentElement.style,c=CL.filter(function(x){return x[0]===o.c})[0],f=FSZ.filter(function(x){return x[0]===o.s})[0];
+if(!document.getElementById("bkPref")){var st=document.createElement("style");st.id="bkPref";st.textContent=".msg.user .bubble{background:var(--bk-bub,var(--secondary));color:var(--bk-bubfg,inherit);transition:background .25s}.msg .bubble{font-size:calc(13px*var(--bk-fs,1))}.msg .bubble code{font-size:calc(12px*var(--bk-fs,1))}.pv .msg{animation:none!important}";document.head.appendChild(st)}
+if(c&&c[0]!=="def"){r.setProperty("--bk-bub",c[2]);r.setProperty("--bk-bubfg",c[3])}else{r.removeProperty("--bk-bub");r.removeProperty("--bk-bubfg")}
+if(f&&f[2]!==1)r.setProperty("--bk-fs",String(f[2]));else r.removeProperty("--bk-fs")}
+applyPref();
+function prefHTML(){var o=getPref();
+return '<div class="st-card pv-card"><div class="st-in"><div class="pv-t">Pratinjau</div><div class="pv"><div class="msg user"><div class="bubble">Halo Bekki, tolong bantu saya</div></div><div class="msg bot"><div class="bubble">Tentu, dengan senang hati!</div></div></div></div></div>'
++'<div class="st-card"><div class="st-in"><div class="st-ct">Warna gelembung chat</div><p class="pf-d">Warna pesan yang kamu kirim.</p><div class="sw-row" role="radiogroup" aria-label="Warna gelembung">'
++CL.map(function(x){return '<button type="button" class="sw'+(x[0]===o.c?' on':'')+(x[0]==="def"?' def':'')+'" role="radio" aria-checked="'+(x[0]===o.c)+'" data-c="'+x[0]+'" aria-label="'+x[1]+'" title="'+x[1]+'" style="--c:'+x[2]+'"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>'}).join("")+'</div></div></div>'
++'<div class="st-card"><div class="st-in"><div class="st-ct">Ukuran teks</div><p class="pf-d">Ukuran tulisan di dalam chat.</p><div class="fs-row" role="radiogroup" aria-label="Ukuran teks">'
++FSZ.map(function(x,i){return '<button type="button" class="fs'+(x[0]===o.s?' on':'')+'" role="radio" aria-checked="'+(x[0]===o.s)+'" data-s="'+x[0]+'"><b style="font-size:'+(13+i*3)+'px">Aa</b><span>'+x[1]+'</span></button>'}).join("")+'</div></div></div>'}
 function stClose(){if(stEl){stEl.remove();stEl=null}}
 function stBody(){
 var u=stUser||{},n=nm(u),box=stEl.querySelector(".st-main"),h="";var rise=(stLast!==stTab);stLast=stTab;
@@ -340,7 +368,7 @@ else if(stTab==="pref"){
 h='<h2 class="st-h">Preferences</h2><div class="st-card"><div class="st-line"><div>Theme<small>Terang, gelap, atau ikuti sistem</small></div><div class="st-modes">'
 +'<button class="pf-mode" data-m="light" type="button" aria-label="Terang" aria-pressed="false">'+I.sun+'</button>'
 +'<button class="pf-mode" data-m="dark" type="button" aria-label="Gelap" aria-pressed="false">'+I.moon+'</button>'
-+'<button class="pf-mode" data-m="system" type="button" aria-label="Ikuti sistem" aria-pressed="false">'+I.pc+'</button></div></div></div>'}
++'<button class="pf-mode" data-m="system" type="button" aria-label="Ikuti sistem" aria-pressed="false">'+I.pc+'</button></div></div></div>'+prefHTML()}
 else if(stTab==="sec"){
 var pv=(u.app_metadata&&u.app_metadata.provider)||"email";
 h='<h2 class="st-h">Security &amp; Access</h2><div class="st-card"><div class="st-line"><div>Metode masuk<small>'+(pv==="google"?"Google":"Kode lewat email")+' · '+esc(u.email||"")+'</small></div></div>'
@@ -369,6 +397,7 @@ stUser=(r&&r.data&&r.data.user)||stUser;isi(stUser);stEl.querySelector(".st-big"
 stEl.querySelector("#stWho").textContent=(f+" "+l).trim()||u.email;ms.textContent="Tersimpan"},function(){bt.disabled=false;ms.textContent="Gagal menyimpan"})}}
 if(stTab==="pref"){
 var m=mode();Array.prototype.forEach.call(box.querySelectorAll(".pf-mode"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-m")===m));b.onclick=function(){setTheme(b.getAttribute("data-m"));stBody()}})}
+if(stTab==="pref"){Array.prototype.forEach.call(box.querySelectorAll(".sw"),function(b){b.onclick=function(){setPref("c",b.getAttribute("data-c"));stBody()}});Array.prototype.forEach.call(box.querySelectorAll(".fs"),function(b){b.onclick=function(){setPref("s",b.getAttribute("data-s"));stBody()}})}
 if(stTab==="sec"){
 appInit(g("appBtn"),g("appHint"));
 g("stOut").onclick=function(){$("pfOut").click()};
