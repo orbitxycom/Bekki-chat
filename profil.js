@@ -280,7 +280,7 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".fs.on{background:var(--foreground);color:var(--background);border-color:transparent}.fs.on span{opacity:.9}.fs:active{transform:scale(.94)}"
 +"@media(max-width:700px){.fs-row{gap:8px}.fs span{font-size:10.5px}.sw-row{gap:12px}}"
 +".dv-head{padding-bottom:4px}.dv-head .st-ct{margin-bottom:6px}.dv-head p{margin:0;font-size:14px;line-height:1.55;color:var(--muted-foreground)}"
-+".dv-list{padding:6px 26px 4px}.dv-empty{padding:18px 0;font-size:14px;color:var(--muted-foreground)}"
++".dv-list{padding:6px 26px 4px}.dv-err{display:block;margin-top:8px;font-size:12px;opacity:.8;word-break:break-word}.dv-empty{padding:18px 0;font-size:14px;color:var(--muted-foreground)}"
 +".dv-row{display:flex;align-items:center;gap:14px;padding:16px 0;border-top:1px solid color-mix(in oklab,var(--foreground) 9%,transparent);overflow:hidden;max-height:90px;animation:dvIn .4s cubic-bezier(.2,.8,.2,1) both;transition:max-height .32s ease,opacity .3s,padding .32s,transform .3s}"
 +".dv-row:first-child{border-top:0}.dv-row.gone{max-height:0;opacity:0;padding-top:0;padding-bottom:0;transform:translateX(24px)}"
 +"@keyframes dvIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}"
@@ -386,7 +386,7 @@ all.disabled=rows.length<2;
 Array.prototype.forEach.call(list.querySelectorAll(".dv-out"),function(b){b.onclick=function(){var row=b.closest(".dv-row"),id=row.getAttribute("data-id");b.disabled=true;b.textContent="Mengeluarkan...";
 sb.from("bekki_devices").delete().eq("user_id",uid).eq("id",id).then(function(r){if(r&&r.error){b.disabled=false;b.textContent="Keluarkan";msg.textContent="Gagal mengeluarkan";return}
 row.classList.add("gone");setTimeout(function(){row.remove();var n=list.querySelectorAll(".dv-row").length;all.disabled=n<2;msg.textContent="Perangkat dikeluarkan. Ia akan keluar dalam beberapa menit."},320)})}})}
-sb.from("bekki_devices").select("*").eq("user_id",uid).then(function(r){if(r.error){list.innerHTML='<div class="dv-empty">Fitur ini belum diaktifkan.</div>';return}render(r.data||[])},function(){list.innerHTML='<div class="dv-empty">Tidak bisa memuat perangkat.</div>'});
+sb.from("bekki_devices").select("*").eq("user_id",uid).then(function(r){if(r.error){list.innerHTML='<div class="dv-empty">Fitur ini belum diaktifkan.<br><small class="dv-err"></small></div>';var er=list.querySelector(".dv-err");if(er)er.textContent="Pesan dari server: "+(r.error.message||r.error.code||"tidak diketahui");return}render(r.data||[])},function(){list.innerHTML='<div class="dv-empty">Tidak bisa memuat perangkat.</div>'});
 all.onclick=function(){all.disabled=true;sb.from("bekki_devices").delete().eq("user_id",uid).neq("id",me).then(function(r){if(r&&r.error){all.disabled=false;msg.textContent="Gagal";return}
 Array.prototype.forEach.call(list.querySelectorAll(".dv-row"),function(row){if(row.getAttribute("data-id")!==me)row.classList.add("gone")});setTimeout(function(){Array.prototype.forEach.call(list.querySelectorAll(".dv-row.gone"),function(x){x.remove()})},320);msg.textContent="Semua perangkat lain dikeluarkan."})}}
 function stClose(){if(stEl){stEl.remove();stEl=null}}
