@@ -21,10 +21,25 @@ function snap(){var o={};SYNC.forEach(function(k){var v=localStorage.getItem(k);
 function push(){if(!syncOn||!syncUid)return Promise.resolve();clearTimeout(syncTimer);syncTimer=null;
 return sb.from("bekki_data").upsert({user_id:syncUid,data:snap(),updated_at:new Date().toISOString()}).then(function(){},function(){})}
 function sched(){clearTimeout(syncTimer);syncTimer=setTimeout(push,1500)}
+
+/* ===== daftar perangkat / sesi aktif per akun ===== */
+var DK="bekki_did",DR="bekki_dreg";
+function devId(){var d=localStorage.getItem(DK);if(!d){d="";try{d=Array.prototype.map.call(crypto.getRandomValues(new Uint8Array(8)),function(b){return("0"+b.toString(16)).slice(-2)}).join("")}catch(e){d=String(Date.now())+Math.floor(Math.random()*1e6)}_set.call(localStorage,DK,d)}return d}
+window.bekkiDevId=devId;
+function devInfo(){var u=navigator.userAgent||"",os=/android/i.test(u)?"Android":/iphone|ipad|ipod/i.test(u)?"iOS":/windows/i.test(u)?"Windows":/mac os|macintosh/i.test(u)?"macOS":/cros/i.test(u)?"ChromeOS":/linux/i.test(u)?"Linux":"Perangkat",
+br=/edg\//i.test(u)?"Edge":/opr\/|opera/i.test(u)?"Opera":/samsungbrowser/i.test(u)?"Samsung Internet":/firefox|fxios/i.test(u)?"Firefox":/chrome|crios/i.test(u)?"Chrome":/safari/i.test(u)?"Safari":"Browser",
+kind=(/ipad|tablet/i.test(u)||(/android/i.test(u)&&!/mobile/i.test(u)))?"tablet":/android|iphone|ipod|mobile/i.test(u)?"mobile":"desktop";
+return{name:br+" di "+os,os:os,browser:br,kind:kind}}
+function devBeat(){if(!syncUid)return Promise.resolve();var id=devId(),reg=localStorage.getItem(DR)===syncUid;
+try{return sb.from("bekki_devices").select("id").eq("user_id",syncUid).eq("id",id).maybeSingle().then(function(r){
+if(r.error)return;
+if(!r.data&&reg){_rem.call(localStorage,DR);window.bekkiLogout("local");return}
+var i=devInfo();return sb.from("bekki_devices").upsert({id:id,user_id:syncUid,name:i.name,os:i.os,browser:i.browser,kind:i.kind,last_seen:new Date().toISOString()}).then(function(x){if(!x.error)_set.call(localStorage,DR,syncUid)})}).catch(function(){})}catch(e){return Promise.resolve()}}
+function devDel(){if(!syncUid)return Promise.resolve();try{return sb.from("bekki_devices").delete().eq("user_id",syncUid).eq("id",devId()).then(function(){},function(){})}catch(e){return Promise.resolve()}}
 window.bekkiFlush=push;
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"&&syncTimer)push()});
 window.addEventListener("pagehide",function(){if(syncTimer)push()});
-function clearSyncLocal(){SYNC.forEach(function(k){_rem.call(localStorage,k)});_rem.call(localStorage,UK)}
+function clearSyncLocal(){SYNC.forEach(function(k){_rem.call(localStorage,k)});_rem.call(localStorage,UK);_rem.call(localStorage,"bekki_dreg")}
 /* tarik data akun dari server; true = halaman sedang dimuat ulang */
 function pullSync(uid){
 syncUid=uid;
@@ -53,7 +68,7 @@ window.bekkiToken=function(){return sb.auth.getSession().then(function(r){return
 /* keluar: hapus sesi di browser ini pasti (tanpa bergantung pada jaringan), lalu ke halaman login */
 function clearLocal(){try{clearSyncLocal();[localStorage,sessionStorage].forEach(function(st){Object.keys(st).forEach(function(k){if(/^sb-.*-auth-token/.test(k)||/^sb-.*-code-verifier/.test(k))st.removeItem(k)})})}catch(e){}}
 window.bekkiLogout=function(scope){
-var done=false,t0=Promise.race([push(),new Promise(function(r){setTimeout(r,2000)})]);t0.then(function(){syncOn=false;go(scope)});};
+var done=false,t0=Promise.race([Promise.all([push(),devDel()]),new Promise(function(r){setTimeout(r,2000)})]);t0.then(function(){syncOn=false;go(scope)});};
 function go(scope){
 var done=false;function fin(){if(done)return;done=true;try{sb.auth.signOut({scope:"local"}).catch(function(){})}catch(e){}clearLocal();toLogin()}
 var t=setTimeout(fin,scope==="global"?3500:1500);
@@ -67,7 +82,7 @@ b.onclick=logout;foot.appendChild(b)}
 ready.then(function(){return sb.auth.getSession()}).then(function(r){
 if(!(r&&r.data&&r.data.session)){toLogin();return}
 var uid=r.data.session.user.id;
-return Promise.race([pullSync(uid),new Promise(function(x){setTimeout(function(){x(false)},4000)})]).then(function(rl){if(rl)return;document.documentElement.classList.add("auth-ok");
+return Promise.race([pullSync(uid),new Promise(function(x){setTimeout(function(){x(false)},4000)})]).then(function(rl){if(rl)return;devBeat();setInterval(devBeat,120000);document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")devBeat()});document.documentElement.classList.add("auth-ok");
 if(location.search.indexOf("code=")>-1)history.replaceState(null,"",location.pathname);else if(location.href.indexOf("#")>-1)history.replaceState(null,"",location.pathname+location.search);
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",addLogout);else addLogout()
 })}).catch(toLogin);
