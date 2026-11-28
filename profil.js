@@ -306,7 +306,7 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
 +"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:2px;margin-bottom:18px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}"
 +".ib-badge{flex:none;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--foreground);color:var(--background);font-size:12px;font-weight:700;display:inline-grid;place-items:center;line-height:1}.pf-item .ib-badge{margin-left:auto}"
-+".ib-top{display:flex;align-items:center;justify-content:flex-end;gap:12px;margin:-4px 0 14px}.ib-empty{padding:40px 8px;text-align:center;color:var(--muted-foreground);font-size:14px}.ib-empty small{display:block;margin-top:8px;font-size:12px;opacity:.75}.ib-top .st-btn[disabled]{opacity:.45;pointer-events:none}"
++".ib-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:-4px 0 14px}.ib-tabs{display:flex;gap:8px}.ib-tab{position:relative;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;border:1px solid color-mix(in oklab,var(--foreground) 14%,transparent);background:color-mix(in oklab,var(--foreground) 4%,transparent);color:var(--foreground);transition:background .2s,color .2s,transform .15s,border-color .2s}.ib-tab:active{transform:scale(.92)}.ib-tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.ib-tab.on{background:var(--foreground);color:var(--background);border-color:var(--foreground)}.ib-pt{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--foreground);box-shadow:0 0 0 2px var(--background)}.ib-tab.on .ib-pt{background:var(--background);box-shadow:0 0 0 2px var(--foreground)}.ib-empty{padding:40px 8px;text-align:center;color:var(--muted-foreground);font-size:14px}.ib-empty small{display:block;margin-top:8px;font-size:12px;opacity:.75}.ib-top .st-btn[disabled]{opacity:.45;pointer-events:none}"
 +".ib-list{display:flex;flex-direction:column;gap:12px}"
 +".ib-card{position:relative;display:grid;grid-template-columns:auto 1fr auto;column-gap:12px;row-gap:6px;align-items:baseline;width:100%;padding:16px 18px;border-radius:18px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--foreground) 3%,transparent);text-align:left;transition:background .2s,transform .15s}"
 +".ib-card:hover{background:color-mix(in oklab,var(--foreground) 6%,transparent)}.ib-card:active{transform:scale(.99)}"
@@ -403,14 +403,14 @@ if(!document.getElementById("bkPref")){var st=document.createElement("style");st
 if(c&&c[0]!=="def"){r.setProperty("--bk-bub",c[2]);r.setProperty("--bk-bubfg",c[3])}else{r.removeProperty("--bk-bub");r.removeProperty("--bk-bubfg")}
 if(f&&f[2]!==1)r.setProperty("--bk-fs",String(f[2]));else r.removeProperty("--bk-fs")}
 applyPref();
-var IBD=null,IBR={},IBERR="",IBT=0,IBUID="",IBBUSY=false;
+var IBTAB="",IBD=null,IBR={},IBERR="",IBT=0,IBUID="",IBBUSY=false;
 function ibLang(){return getPref().l||"id"}
 function ibUnread(){return IBD?IBD.filter(function(m){return !IBR[m.id]}).length:0}
 function ibBadge(){var n=ibUnread(),b=$("pfIbB");if(b){b.textContent=n;b.hidden=!n}}
 function ibUid(){var sb=window.bekkiSB;if(IBUID)return Promise.resolve(IBUID);if(!sb||!sb.auth)return Promise.resolve("");return sb.auth.getSession().then(function(r){IBUID=(r&&r.data&&r.data.session&&r.data.session.user&&r.data.session.user.id)||"";return IBUID}).catch(function(){return ""})}
 function ibFetch(force){var sb=window.bekkiSB;if(!sb||!sb.from||IBBUSY)return Promise.resolve();if(!force&&IBD&&Date.now()-IBT<15000)return Promise.resolve();IBBUSY=true;
 return ibUid().then(function(uid){if(!uid){IBBUSY=false;return}
-return sb.from("bekki_inbox").select("id,title,body,i18n,created_at").order("created_at",{ascending:false}).limit(60).then(function(a){
+return sb.from("bekki_inbox").select("id,user_id,title,body,i18n,created_at").order("created_at",{ascending:false}).limit(60).then(function(a){
 if(a.error){IBERR=a.error.message||a.error.code||"error";IBBUSY=false;IBT=Date.now();if(IBD===null)IBD=[];if(stEl&&stTab==="inbox")stBody();return}
 return sb.from("bekki_inbox_read").select("msg_id").eq("user_id",uid).then(function(b){
 var rd={};((b&&b.data)||[]).forEach(function(x){rd[x.msg_id]=1});var d=a.data||[];
@@ -422,12 +422,17 @@ q.then(function(r){if(r&&r.error){ids.forEach(function(id){if(read)delete IBR[id
 function inboxHTML(){var L=ibLang(),LC={id:"id-ID",en:"en-US",zh:"zh-CN",ar:"ar",ru:"ru-RU",de:"de-DE"}[L]||"id-ID";var h='<h2 class="st-h">Inbox</h2>';
 if(IBD===null)return h+'<div class="ib-empty">Memuat...</div>';
 if(IBERR)return h+'<div class="ib-empty">Fitur ini belum diaktifkan.<br><small class="ib-err"></small></div>';
-if(!IBD.length)return h+'<div class="ib-empty">Belum ada pesan.</div>';
-return h+'<div class="ib-top"><button type="button" class="st-btn out" id="ibAll"'+(ibUnread()?'':' disabled')+'>Tandai semua dibaca</button></div><div class="ib-list">'
-+IBD.map(function(m){var x=(m.i18n&&m.i18n[L])||{},t=x.t||m.title,b=x.b||m.body,un=!IBR[m.id],d="";try{d=new Date(m.created_at).toLocaleDateString(LC,{day:"numeric",month:"long",year:"numeric"})}catch(e){}
+var pe=IBD.filter(function(m){return m.user_id}),gl=IBD.filter(function(m){return !m.user_id});
+if(IBTAB!=="p"&&IBTAB!=="g")IBTAB=pe.length?"p":"g";
+var cur=IBTAB==="p"?pe:gl,unc=cur.filter(function(m){return !IBR[m.id]}).length;
+h+='<div class="ib-top"><div class="ib-tabs" role="tablist"><button type="button" class="ib-tab'+(IBTAB==="p"?' on':'')+'" data-k="p" role="tab" aria-selected="'+(IBTAB==="p")+'" aria-label="Pribadi" title="Pribadi"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.6-3.6 3.5-5.5 7.5-5.5s6.9 1.9 7.5 5.5"/></svg>'+(pe.some(function(m){return !IBR[m.id]})?'<i class="ib-pt"></i>':'')+'</button><button type="button" class="ib-tab'+(IBTAB==="g"?' on':'')+'" data-k="g" role="tab" aria-selected="'+(IBTAB==="g")+'" aria-label="Global" title="Global"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.5 3.6 5.3 3.6 8.5s-1.2 6-3.6 8.5c-2.4-2.5-3.6-5.3-3.6-8.5S9.6 6 12 3.5z"/></svg>'+(gl.some(function(m){return !IBR[m.id]})?'<i class="ib-pt"></i>':'')+'</button></div><button type="button" class="st-btn out" id="ibAll"'+(unc?'':' disabled')+'>Tandai semua dibaca</button></div>';
+if(!cur.length)return h+'<div class="ib-empty">Belum ada pesan.</div>';
+return h+'<div class="ib-list">'
++cur.map(function(m){var x=(m.i18n&&m.i18n[L])||{},t=x.t||m.title,b=x.b||m.body,un=!IBR[m.id],d="";try{d=new Date(m.created_at).toLocaleDateString(LC,{day:"numeric",month:"long",year:"numeric"})}catch(e){}
 return '<button type="button" class="ib-card'+(un?' un':'')+'" data-i="'+esc(m.id)+'"><i class="ib-dot"></i><span class="ib-t">'+esc(t)+'</span><span class="ib-d">'+esc(d)+'</span><span class="ib-b">'+esc(b)+'</span></button>'}).join("")+'</div>'}
 function inboxBind(box){var all=box.querySelector("#ibAll"),er=box.querySelector(".ib-err");if(er)er.textContent="Pesan dari server: "+IBERR;
-if(all)all.onclick=function(){ibMark((IBD||[]).filter(function(m){return !IBR[m.id]}).map(function(m){return m.id}),true)};
+if(all)all.onclick=function(){ibMark((IBD||[]).filter(function(m){return !IBR[m.id]&&(IBTAB==="p"?m.user_id:!m.user_id)}).map(function(m){return m.id}),true)};
+Array.prototype.forEach.call(box.querySelectorAll(".ib-tab"),function(b){b.onclick=function(){var k=b.getAttribute("data-k");if(k!==IBTAB){IBTAB=k;stBody()}}});
 Array.prototype.forEach.call(box.querySelectorAll(".ib-card"),function(b){b.onclick=function(){var id=b.getAttribute("data-i");ibMark([id],!IBR[id])}});ibFetch(false)}
 var LDD=[["id","Bahasa Indonesia"],["en","English"],["zh","\u4e2d\u6587 (Mandarin)"],["ar","\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)"],["ru","\u0420\u0443\u0441\u0441\u043a\u0438\u0439 (Russian)"],["de","Deutsch (German)"]];
 var LGS=[["id","ID","Bahasa Indonesia",""],["en","EN","English",""],["zh","\u4e2d","\u4e2d\u6587","Mandarin"],["ar","\u0639","\u0627\u0644\u0639\u0631\u0628\u064a\u0629","Arabic"],["ru","RU","\u0420\u0443\u0441\u0441\u043a\u0438\u0439","Russian"],["de","DE","Deutsch","German"]];
@@ -647,6 +652,7 @@ var E=[["Chat baru","New chat","新对话","محادثة جديدة","Новый
 ["Wilayah akun","Account region","账号地区","منطقة الحساب","Регион аккаунта","Kontoregion"],
 ["Inbox","Inbox","收件箱","صندوق الوارد","Входящие","Posteingang"],["Tandai semua dibaca","Mark all as read","全部标为已读","وضع علامة مقروء على الكل","Отметить все как прочитанные","Alle als gelesen markieren"],
 ["Belum ada pesan.","No messages yet.","暂无消息。","لا توجد رسائل بعد.","Сообщений пока нет.","Noch keine Nachrichten."],["Memuat...","Loading...","加载中...","جارٍ التحميل...","Загрузка...","Wird geladen..."],
+["Pribadi","Personal","个人","شخصي","Личные","Persönlich"],["Global","Global","全体","عام","Общие","Allgemein"],
 ["Perbarui profil","Update profile","更新资料","تحديث الملف","Обновить профиль","Profil aktualisieren"],
 ["Ganti foto profil","Change profile photo","更换头像","تغيير صورة الملف","Сменить фото профиля","Profilfoto ändern"],
 ["Statistik Penggunaan","Usage Statistics","使用统计","إحصاءات الاستخدام","Статистика использования","Nutzungsstatistik"],
