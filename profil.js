@@ -299,6 +299,10 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +"@media(max-width:700px){.dv-list{padding:4px 18px}.dv-bar{flex-wrap:wrap}.dv-bar .st-btn{width:100%}.dv-out{padding:0 13px}}"
 +".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
 +"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:2px;margin-bottom:18px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}"
++".lg-dd{display:none;position:relative;margin-top:14px;width:max-content;min-width:200px;max-width:100%}"
++".lg-sel{appearance:none;-webkit-appearance:none;width:100%;height:48px;padding:0 44px 0 16px;border-radius:14px;border:1px solid color-mix(in oklab,var(--foreground) 14%,transparent);background:color-mix(in oklab,var(--foreground) 3%,transparent);color:var(--foreground);font:inherit;font-size:15px;font-weight:600;outline:none;cursor:pointer;transition:border-color .2s,background .2s}"
++".lg-sel:focus-visible{border-color:var(--foreground)}.lg-sel option{color:#111;background:#fff}"
++".lg-dd svg{position:absolute;right:14px;top:50%;width:16px;height:16px;margin-top:-8px;pointer-events:none;fill:none;stroke:var(--muted-foreground);stroke-width:2.2}"
 +".lg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}"
 +".lg{position:relative;display:flex;align-items:center;gap:12px;min-height:58px;padding:10px 14px;border-radius:16px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--foreground) 3%,transparent);text-align:left;transition:background .2s,border-color .2s,transform .15s}"
 +".lg:hover{background:color-mix(in oklab,var(--foreground) 7%,transparent)}.lg:active{transform:scale(.97)}"
@@ -306,7 +310,8 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".lg-b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:700;background:var(--foreground);color:var(--background)}"
 +".lg-n{display:flex;flex-direction:column;min-width:0;line-height:1.25}.lg-n b{font-size:14px;font-weight:600}.lg-n small{font-size:12px;color:var(--muted-foreground)}"
 +".lg-ck{position:absolute;right:12px;top:50%;width:18px;height:18px;margin-top:-9px;fill:none;stroke:var(--foreground);stroke-width:2.6;opacity:0;transform:scale(.6);transition:opacity .2s,transform .2s}.lg.on .lg-ck{opacity:1;transform:none}"
-+"@media(max-width:420px){.lg-row{grid-template-columns:1fr}}";
++"@media(max-width:420px){.lg-row{grid-template-columns:1fr}}"
++"@media(max-width:700px){.lg-dd{display:block}.lg-row{display:none}}";
 var SI={
 user:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 sl:'<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
@@ -375,7 +380,7 @@ if(c&&c[0]!=="def"){r.setProperty("--bk-bub",c[2]);r.setProperty("--bk-bubfg",c[
 if(f&&f[2]!==1)r.setProperty("--bk-fs",String(f[2]));else r.removeProperty("--bk-fs")}
 applyPref();
 var LGS=[["id","ID","Bahasa Indonesia",""],["en","EN","English",""],["zh","\u4e2d","\u4e2d\u6587","Mandarin"],["ar","\u0639","\u0627\u0644\u0639\u0631\u0628\u064a\u0629","Arabic"]];
-function langHTML(){var o=getPref();return '<div class="st-card"><div class="st-in"><div class="st-ct">Bahasa</div><p class="pf-d">Bahasa tampilan dan jawaban Bekki.</p><div class="lg-row" role="radiogroup" aria-label="Bahasa">'+LGS.map(function(x){return '<button type="button" class="lg'+(x[0]===o.l?' on':'')+'" role="radio" aria-checked="'+(x[0]===o.l)+'" data-l="'+x[0]+'" lang="'+x[0]+'"><i class="lg-b">'+x[1]+'</i><span class="lg-n"><b>'+x[2]+'</b>'+(x[3]?'<small>'+x[3]+'</small>':'')+'</span><svg class="lg-ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>'}).join("")+'</div></div></div>'}
+function langHTML(){var o=getPref();return '<div class="st-card"><div class="st-in"><div class="st-ct">Bahasa</div><p class="pf-d">Bahasa tampilan dan jawaban Bekki.</p><div class="lg-row" role="radiogroup" aria-label="Bahasa">'+LGS.map(function(x){return '<button type="button" class="lg'+(x[0]===o.l?' on':'')+'" role="radio" aria-checked="'+(x[0]===o.l)+'" data-l="'+x[0]+'" lang="'+x[0]+'"><i class="lg-b">'+x[1]+'</i><span class="lg-n"><b>'+x[2]+'</b>'+(x[3]?'<small>'+x[3]+'</small>':'')+'</span><svg class="lg-ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>'}).join("")+'</div><div class="lg-dd"><select class="lg-sel" aria-label="Bahasa">'+[["id","Bahasa Indonesia"],["en","English"],["zh","\u4e2d\u6587 (Mandarin)"],["ar","\u0627\u0644\u0639\u0631\u0628\u064a\u0629 (Arabic)"]].map(function(x){return '<option value="'+x[0]+'" lang="'+x[0]+'"'+(x[0]===(o.l||"id")?' selected':'')+'>'+x[1]+'</option>'}).join("")+'</select><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></div></div></div>'}
 function prefHTML(){var o=getPref();
 return '<div class="st-card pv-card"><div class="st-in"><div class="pv-t">Pratinjau</div><div class="pv"><div class="msg user"><div class="bubble">Halo Bekki, tolong bantu saya</div></div><div class="msg bot"><div class="bubble">Tentu, dengan senang hati!</div></div></div></div></div>'
 +'<div class="st-card"><div class="st-in"><div class="st-ct">Warna gelembung chat</div><p class="pf-d">Warna pesan yang kamu kirim.</p><div class="sw-row" role="radiogroup" aria-label="Warna gelembung">'
@@ -442,7 +447,7 @@ stUser=(r&&r.data&&r.data.user)||stUser;isi(stUser);stEl.querySelector(".st-big"
 stEl.querySelector("#stWho").textContent=(f+" "+l).trim()||u.email;ms.textContent="Tersimpan"},function(){bt.disabled=false;ms.textContent="Gagal menyimpan"})}}
 if(stTab==="pref"){
 var m=mode();Array.prototype.forEach.call(box.querySelectorAll(".pf-mode"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-m")===m));b.onclick=function(){setTheme(b.getAttribute("data-m"));stBody()}})}
-if(stTab==="pref"){Array.prototype.forEach.call(box.querySelectorAll(".lg"),function(b){b.onclick=function(){setPref("l",b.getAttribute("data-l"));stBody()}})}
+if(stTab==="pref"){var ls=box.querySelector(".lg-sel");if(ls)ls.onchange=function(){setPref("l",ls.value);stBody()};Array.prototype.forEach.call(box.querySelectorAll(".lg"),function(b){b.onclick=function(){setPref("l",b.getAttribute("data-l"));stBody()}})}
 if(stTab==="pref"){Array.prototype.forEach.call(box.querySelectorAll(".sw"),function(b){b.onclick=function(){setPref("c",b.getAttribute("data-c"));stBody()}});Array.prototype.forEach.call(box.querySelectorAll(".fs"),function(b){b.onclick=function(){setPref("s",b.getAttribute("data-s"));stBody()}})}
 if(stTab==="sec"){
 appInit(g("appBtn"),g("appHint"));devLoad(box);
