@@ -1079,3 +1079,8 @@ header #toggle2 svg{font-size:22px!important}
 .fbp-ok svg{width:18px;height:18px;fill:none;stroke:#22c55e;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 @keyframes fbpIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @media(max-width:480px){.fbp{padding:14px}.fbp-b button{width:42px;height:42px}}
+
+/* header kaca: isi chat terlihat tembus di bawah judul */
+.main:not(.home){position:relative}
+.main:not(.home)>header{position:absolute!important;top:0;left:0;right:0;z-index:6;background:color-mix(in oklab,var(--background) 52%,transparent)!important;-webkit-backdrop-filter:blur(18px) saturate(1.7);backdrop-filter:blur(18px) saturate(1.7);border-bottom:1px solid color-mix(in oklab,var(--foreground) 7%,transparent)}
+.main:not(.home)>.chat{padding-top:calc(56px + env(safe-area-inset-top))}
