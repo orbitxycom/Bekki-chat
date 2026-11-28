@@ -132,12 +132,12 @@ document.querySelectorAll(".art.on").forEach(x=>x!==a&&x.classList.remove("on"))
 const CATS='<svg viewBox="190 190 700 700" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges"><rect x="190" y="190" width="700" height="700" fill="#000"/><rect x="268" y="268" width="78" height="78" fill="#ade4ff"/><rect x="734" y="268" width="78" height="78" fill="#ade4ff"/><rect x="268" y="346" width="156" height="78" fill="#9fdcff"/><rect x="657" y="346" width="156" height="78" fill="#9fdcff"/><rect x="268" y="423" width="544" height="78" fill="#90d6ff"/><rect x="268" y="501" width="78" height="78" fill="#80cbff"/><rect x="424" y="501" width="233" height="78" fill="#80cbff"/><rect x="734" y="501" width="78" height="78" fill="#80cbff"/><rect x="268" y="579" width="233" height="78" fill="#5eb4f7"/><rect x="579" y="579" width="233" height="78" fill="#5eb4f7"/><rect x="268" y="656" width="156" height="78" fill="#2f8add"/><rect x="462" y="656" width="39" height="39" fill="#2f8add"/><rect x="579" y="656" width="39" height="39" fill="#2f8add"/><rect x="657" y="656" width="156" height="78" fill="#2f8add"/><rect x="229" y="734" width="622" height="78" fill="#0d3b87"/></svg>';
 const SHI={
 cp:'<svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>',
-wa:'<svg viewBox="0 0 24 24"><path d="M3 21l1.6-4.6A8.5 8.5 0 1 1 8 19.6z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8c-1-.4-2-1.4-2.4-2.4l.8-1-1-2z"/></svg>',
-tg:'<svg viewBox="0 0 24 24"><path d="M21 4 3 11l6 2 2 6 3-4 5 4z"/><path d="M9 13l8-6"/></svg>',
-fb:'<svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg>',
-mail:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
-sms:'<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
-dl:'<svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>',pv:'<svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg>',nx:'<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>',more:'<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>'};
+wa:'<svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 4.54 0 8.24 3.7 8.24 8.24s-3.7 8.24-8.24 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28z"/></svg>',
+tg:'<svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M21.6 3.4 2.8 10.7c-1.1.4-1.1 1.3-.2 1.6l4.8 1.5 1.9 5.7c.2.6.9.8 1.4.4l2.7-2.2 4.9 3.6c.7.4 1.5.1 1.7-.8l3.2-15.2c.3-1.1-.4-1.7-1.3-1.2zM9.2 13.6l8.5-5.3c.4-.3.8-.1.5.2l-7 6.4-.3 3.1z"/></svg>',
+fb:'<svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M13.6 21.5v-8h2.7l.4-3.2h-3.1V8.3c0-.9.3-1.5 1.6-1.5h1.7V4c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2v2.3H7.6v3.2h2.8v8z"/></svg>',
+mail:'<svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M4 5h16a2 2 0 0 1 2 2v.4l-10 6.2L2 7.4V7a2 2 0 0 1 2-2zm18 4.7V17a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9.7l10 6.2z"/></svg>',
+sms:'<svg viewBox="0 0 24 24" style="fill:currentColor;stroke:none"><path d="M5 3h14a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H9.5L5.6 21.4a.8.8 0 0 1-1.3-.6V18A3 3 0 0 1 2 15V6a3 3 0 0 1 3-3zm3 7.2a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zm4 0a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zm4 0a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4z"/></svg>',
+dl:'<svg viewBox="0 0 24 24" style="stroke-width:2.4"><path d="M12 4v11M7.5 10.8 12 15.3l4.5-4.5M5 20h14"/></svg>',pv:'<svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg>',nx:'<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>',more:'<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>'};
 function LGC(){return[BM[2],BM[1],BM[0]]}
 const SBG=[["#3a3a3f","#111114"],["#22c55e","#a7f3d0"],["#2563eb","#a855f7"]];
 function RR(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
@@ -165,14 +165,14 @@ if(navigator.canShare&&navigator.canShare(d)){try{await navigator.share(d)}catch
 let ok=!1;try{await navigator.clipboard.write([new ClipboardItem({"image/png":bl})]);ok=!0;TT("Gambar disalin, tempel di chat")}catch(e){}
 if(!ok){DLB(bl,"bekki.png");TT("Gambar disimpan")}
 fb&&window.open(fb,"_blank","noopener")};
-const apps=[["WhatsApp",SHI.wa,"#25d366","#fff",()=>"https://wa.me/?text="+et+"%20"+EU()],
-["Telegram",SHI.tg,"#2aabee","#fff",()=>"https://t.me/share/url?url="+EU()+"&text="+et],
-["Facebook",SHI.fb,"#1877f2","#fff",()=>"https://www.facebook.com/sharer/sharer.php?u="+EU()],
-["X",'<span style="font:700 20px/1 system-ui">X</span>',"#000","#fff",()=>"https://twitter.com/intent/tweet?text="+et+"&url="+EU()],
-["Email",SHI.mail,"#ea4335","#fff",()=>"mailto:?subject="+et+"&body="+EU()],
-["Pesan",SHI.sms,"#34c759","#fff",()=>"sms:?&body="+et+"%20"+EU()],
-["Simpan gambar",SHI.dl,"#e5e7eb","#111",async()=>{DLB(await mkImg(ci,ti),"bekki.png");TT("Gambar disimpan")}]];
-if(navigator.share)apps.push(["Lainnya",SHI.more,"#e5e7eb","#111",()=>shareImg("")]);
+const apps=[["WhatsApp",SHI.wa,"linear-gradient(145deg,#4ce27f,#14a44d)","#fff",()=>"https://wa.me/?text="+et+"%20"+EU()],
+["Telegram",SHI.tg,"linear-gradient(145deg,#46bdf0,#1d8fd0)","#fff",()=>"https://t.me/share/url?url="+EU()+"&text="+et],
+["Facebook",SHI.fb,"linear-gradient(145deg,#3b8bff,#0f56d6)","#fff",()=>"https://www.facebook.com/sharer/sharer.php?u="+EU()],
+["X",'<span style="font:700 20px/1 system-ui">X</span>',"linear-gradient(145deg,#3a3a3a,#000)","#fff",()=>"https://twitter.com/intent/tweet?text="+et+"&url="+EU()],
+["Email",SHI.mail,"linear-gradient(145deg,#ff7a6b,#e23a2b)","#fff",()=>"mailto:?subject="+et+"&body="+EU()],
+["Pesan",SHI.sms,"linear-gradient(145deg,#4fdc72,#1fa63f)","#fff",()=>"sms:?&body="+et+"%20"+EU()],
+["Simpan gambar",SHI.dl,"linear-gradient(145deg,#9b7bff,#5b5be6)","#fff",async()=>{DLB(await mkImg(ci,ti),"bekki.png");TT("Gambar disimpan")}]];
+if(navigator.share)apps.push(["Lainnya",SHI.more,"rgba(128,128,128,.22)","var(--foreground)",()=>shareImg("")]);
 const w=document.createElement("div");w.className="dk-back";w.id="sh";
 w.innerHTML='<div class="dk-sheet sh-sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="dk-grab" aria-hidden="true"><span></span></div><h3 id="shT" class="sh-h">Bagikan percakapan</h3><p class="sh-s">Siapa pun yang memiliki tautan dapat melihat pesan sebelumnya.</p><div class="sh-lk"><span class="sh-url">'+ES(U().replace(/^https?:\/\//,""))+'</span><button type="button" class="sh-cp">Salin</button></div><div class="sh-wrap"><button type="button" class="sh-nav l" aria-label="Sebelumnya">'+SHI.pv+'</button><div class="sh-car">'+slides+'</div><button type="button" class="sh-nav r" aria-label="Berikutnya">'+SHI.nx+'</button></div><div class="sh-dots"><i class="on"></i><i></i><i></i></div><div class="sh-line"></div><div class="sh-apps"></div></div>';
 document.body.appendChild(w);
