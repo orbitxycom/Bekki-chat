@@ -298,7 +298,15 @@ var SCSS=".st-back{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:70;d
 +".dv-bar{gap:14px;justify-content:space-between}.dv-bar .st-msg{flex:1;min-width:0;font-size:12.5px}.dv-bar .st-btn:disabled{opacity:.45;cursor:default}"
 +"@media(max-width:700px){.dv-list{padding:4px 18px}.dv-bar{flex-wrap:wrap}.dv-bar .st-btn{width:100%}.dv-out{padding:0 13px}}"
 +".pf-act .st-btn{height:50px;padding:0 32px;border-radius:999px;background:var(--foreground);color:var(--background);border-color:transparent;font-weight:500}"
-+"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:2px;margin-bottom:18px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}";
++"@media(max-width:700px){.pf-form .st-row2{grid-template-columns:1fr}.pf-act{flex-direction:column-reverse;align-items:stretch}.pf-act .st-btn{width:100%}.pf-hero{gap:16px;padding-bottom:2px;margin-bottom:18px}.pf-open .st-big{width:70px;height:70px;font-size:24px}.pf-hero-t b{font-size:20px}.pf-meta{border-radius:14px}}"
++".lg-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}"
++".lg{position:relative;display:flex;align-items:center;gap:12px;min-height:58px;padding:10px 14px;border-radius:16px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--foreground) 3%,transparent);text-align:left;transition:background .2s,border-color .2s,transform .15s}"
++".lg:hover{background:color-mix(in oklab,var(--foreground) 7%,transparent)}.lg:active{transform:scale(.97)}"
++".lg.on{border-color:var(--foreground);background:color-mix(in oklab,var(--foreground) 8%,transparent)}"
++".lg-b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:700;background:var(--foreground);color:var(--background)}"
++".lg-n{display:flex;flex-direction:column;min-width:0;line-height:1.25}.lg-n b{font-size:14px;font-weight:600}.lg-n small{font-size:12px;color:var(--muted-foreground)}"
++".lg-ck{position:absolute;right:12px;top:50%;width:18px;height:18px;margin-top:-9px;fill:none;stroke:var(--foreground);stroke-width:2.6;opacity:0;transform:scale(.6);transition:opacity .2s,transform .2s}.lg.on .lg-ck{opacity:1;transform:none}"
++"@media(max-width:420px){.lg-row{grid-template-columns:1fr}}";
 var SI={
 user:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
 sl:'<svg viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>',
@@ -359,13 +367,15 @@ function applyAv(){var a="";try{a=localStorage.getItem("bekki_av_v1")||""}catch(
 Array.prototype.forEach.call(document.querySelectorAll("#pfAv,#pfAv2,.st-who .pf-av,.st-big"),function(e){e.style.backgroundImage='url("'+a+'")';e.style.backgroundSize="cover";e.style.backgroundPosition="center";e.style.color="transparent"})}
 var CL=[["def","Bawaan","var(--secondary)",null],["inv","Hitam / Putih","var(--foreground)","var(--background)"],["blue","Biru","linear-gradient(135deg,#3b82f6,#2563eb)","#fff"],["violet","Ungu","linear-gradient(135deg,#8b5cf6,#6d28d9)","#fff"],["pink","Pink","linear-gradient(135deg,#f472b6,#db2777)","#fff"]];
 var FSZ=[["s","Kecil",.9],["m","Normal",1],["l","Besar",1.14],["xl","Sangat besar",1.3]];
-function getPref(){try{var o=JSON.parse(localStorage.getItem("bekki_pref_v1")||"{}")||{};return{c:o.c||"def",s:o.s||"m"}}catch(e){return{c:"def",s:"m"}}}
-function setPref(k,v){var o=getPref();o[k]=v;try{localStorage.setItem("bekki_pref_v1",JSON.stringify(o))}catch(e){}applyPref()}
+function getPref(){try{var o=JSON.parse(localStorage.getItem("bekki_pref_v1")||"{}")||{};return{c:o.c||"def",s:o.s||"m",l:o.l||""}}catch(e){return{c:"def",s:"m",l:""}}}
+function setPref(k,v){var o=getPref();o[k]=v;try{localStorage.setItem("bekki_pref_v1",JSON.stringify(o))}catch(e){}applyPref();if(k==="l"&&window.bkLang)window.bkLang()}
 function applyPref(){var o=getPref(),r=document.documentElement.style,c=CL.filter(function(x){return x[0]===o.c})[0],f=FSZ.filter(function(x){return x[0]===o.s})[0];
 if(!document.getElementById("bkPref")){var st=document.createElement("style");st.id="bkPref";st.textContent=".msg.user .bubble{background:var(--bk-bub,var(--secondary));color:var(--bk-bubfg,inherit);transition:background .25s}.msg .bubble{font-size:calc(13px*var(--bk-fs,1))}.msg .bubble code{font-size:calc(12px*var(--bk-fs,1))}.pv .msg{animation:none!important}";document.head.appendChild(st)}
 if(c&&c[0]!=="def"){r.setProperty("--bk-bub",c[2]);r.setProperty("--bk-bubfg",c[3])}else{r.removeProperty("--bk-bub");r.removeProperty("--bk-bubfg")}
 if(f&&f[2]!==1)r.setProperty("--bk-fs",String(f[2]));else r.removeProperty("--bk-fs")}
 applyPref();
+var LGS=[["id","ID","Bahasa Indonesia",""],["en","EN","English",""],["zh","\u4e2d","\u4e2d\u6587","Mandarin"],["ar","\u0639","\u0627\u0644\u0639\u0631\u0628\u064a\u0629","Arabic"]];
+function langHTML(){var o=getPref();return '<div class="st-card"><div class="st-in"><div class="st-ct">Bahasa</div><p class="pf-d">Bahasa tampilan dan jawaban Bekki.</p><div class="lg-row" role="radiogroup" aria-label="Bahasa">'+LGS.map(function(x){return '<button type="button" class="lg'+(x[0]===o.l?' on':'')+'" role="radio" aria-checked="'+(x[0]===o.l)+'" data-l="'+x[0]+'" lang="'+x[0]+'"><i class="lg-b">'+x[1]+'</i><span class="lg-n"><b>'+x[2]+'</b>'+(x[3]?'<small>'+x[3]+'</small>':'')+'</span><svg class="lg-ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>'}).join("")+'</div></div></div>'}
 function prefHTML(){var o=getPref();
 return '<div class="st-card pv-card"><div class="st-in"><div class="pv-t">Pratinjau</div><div class="pv"><div class="msg user"><div class="bubble">Halo Bekki, tolong bantu saya</div></div><div class="msg bot"><div class="bubble">Tentu, dengan senang hati!</div></div></div></div></div>'
 +'<div class="st-card"><div class="st-in"><div class="st-ct">Warna gelembung chat</div><p class="pf-d">Warna pesan yang kamu kirim.</p><div class="sw-row" role="radiogroup" aria-label="Warna gelembung">'
@@ -403,7 +413,7 @@ else if(stTab==="pref"){
 h='<h2 class="st-h">Preferences</h2><div class="st-card"><div class="st-line"><div>Theme<small>Terang, gelap, atau ikuti sistem</small></div><div class="st-modes">'
 +'<button class="pf-mode" data-m="light" type="button" aria-label="Terang" aria-pressed="false">'+I.sun+'</button>'
 +'<button class="pf-mode" data-m="dark" type="button" aria-label="Gelap" aria-pressed="false">'+I.moon+'</button>'
-+'<button class="pf-mode" data-m="system" type="button" aria-label="Ikuti sistem" aria-pressed="false">'+I.pc+'</button></div></div></div>'+prefHTML()}
++'<button class="pf-mode" data-m="system" type="button" aria-label="Ikuti sistem" aria-pressed="false">'+I.pc+'</button></div></div></div>'+langHTML()+prefHTML()}
 else if(stTab==="sec"){
 var pv=(u.app_metadata&&u.app_metadata.provider)||"email";
 h='<h2 class="st-h">Security &amp; Access</h2><div class="st-card"><div class="st-line"><div>Metode masuk<small>'+(pv==="google"?"Google":"Kode lewat email")+' · '+esc(u.email||"")+'</small></div></div>'
@@ -432,6 +442,7 @@ stUser=(r&&r.data&&r.data.user)||stUser;isi(stUser);stEl.querySelector(".st-big"
 stEl.querySelector("#stWho").textContent=(f+" "+l).trim()||u.email;ms.textContent="Tersimpan"},function(){bt.disabled=false;ms.textContent="Gagal menyimpan"})}}
 if(stTab==="pref"){
 var m=mode();Array.prototype.forEach.call(box.querySelectorAll(".pf-mode"),function(b){b.setAttribute("aria-pressed",String(b.getAttribute("data-m")===m));b.onclick=function(){setTheme(b.getAttribute("data-m"));stBody()}})}
+if(stTab==="pref"){Array.prototype.forEach.call(box.querySelectorAll(".lg"),function(b){b.onclick=function(){setPref("l",b.getAttribute("data-l"));stBody()}})}
 if(stTab==="pref"){Array.prototype.forEach.call(box.querySelectorAll(".sw"),function(b){b.onclick=function(){setPref("c",b.getAttribute("data-c"));stBody()}});Array.prototype.forEach.call(box.querySelectorAll(".fs"),function(b){b.onclick=function(){setPref("s",b.getAttribute("data-s"));stBody()}})}
 if(stTab==="sec"){
 appInit(g("appBtn"),g("appHint"));devLoad(box);
@@ -485,4 +496,68 @@ var sb=window.bekkiSB;
 if(sb)sb.auth.getSession().then(function(r){isi(r&&r.data&&r.data.session?r.data.session.user:null)}).catch(function(){});
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+
+/* ===== Bahasa (Language): Indonesia, English, Mandarin, Arab ===== */
+(function(){
+var E=[
+["Chat baru","New chat","新对话","محادثة جديدة"],["Hapus semua","Delete all","全部删除","حذف الكل"],["Konteks","Context","上下文","السياق"],["Proyek","Projects","项目","المشاريع"],["Obrolan","Chats","对话","المحادثات"],["Belum ada proyek","No projects yet","暂无项目","لا توجد مشاريع بعد"],["Konektor","Connectors","连接器","الموصلات"],["Keahlian","Skills","技能","المهارات"],["Pengaturan","Settings","设置","الإعدادات"],["Dukungan","Support","支持","الدعم"],["Ketentuan","Terms","条款","الشروط"],["Kebijakan privasi","Privacy policy","隐私政策","سياسة الخصوصية"],["Keluar","Log out","退出登录","تسجيل الخروج"],
+["Tanya apa saja...","Ask anything...","随便问点什么...","اسأل أي شيء..."],
+["Bekki bisa keliru. Periksa kembali jawabannya.","Bekki can make mistakes. Check answers.","Bekki 可能会出错，请核实答案。","قد يخطئ Bekki. تحقق من الإجابات."],
+["Ada yang bisa dibantu?","How can I help?","有什么可以帮您？","كيف يمكنني مساعدتك؟"],
+["Buatkan kode algoritma Dijkstra","Write code for Dijkstra's algorithm","写一段 Dijkstra 算法的代码","اكتب كود خوارزمية ديكسترا"],
+["Bantu saya menulis esai atau surat","Help me write an essay or letter","帮我写一篇文章或一封信","ساعدني في كتابة مقال أو رسالة"],
+["Kabar terbaru dunia AI","Latest news in AI","AI 领域的最新动态","آخر أخبار الذكاء الاصطناعي"],
+["Jelaskan hal rumit dengan sederhana","Explain something complex simply","用简单的方式解释复杂的事","اشرح أمرًا معقدًا ببساطة"],
+["Letakkan file di sini...","Drop your files here...","将文件拖放到此处...","أفلت ملفاتك هنا..."],
+["Hapus semua obrolan?","Delete all chats?","删除所有对话？","حذف كل المحادثات؟"],
+["Tindakan ini tidak bisa dibatalkan. Semua obrolanmu di perangkat ini akan dihapus permanen.","This action cannot be undone. This will permanently delete all your chats from this device.","此操作无法撤销。这将永久删除此设备上的所有对话。","لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع محادثاتك من هذا الجهاز نهائيًا."],
+["Batal","Cancel","取消","إلغاء"],["Hapus Semua","Delete All","全部删除","حذف الكل"],
+["Hari ini","Today","今天","اليوم"],["Kemarin","Yesterday","昨天","أمس"],["7 hari terakhir","Previous 7 days","过去 7 天","آخر 7 أيام"],["Lebih lama","Older","更早","أقدم"],["Disematkan","Pinned","已置顶","المثبتة"],["Belum ada obrolan","No chats yet","暂无对话","لا توجد محادثات بعد"],["Tidak ditemukan","Not found","未找到","لم يتم العثور"],
+["Buka sidebar","Open sidebar","打开侧边栏","افتح الشريط الجانبي"],["Cari obrolan","Search chats","搜索对话","ابحث في المحادثات"],["Cari chat","Search chats","搜索对话","ابحث في المحادثات"],["Gelap","Dark","深色","داكن"],["Terang","Light","浅色","فاتح"],["Ikuti sistem","Follow system","跟随系统","اتبع النظام"],["Tema","Theme","主题","المظهر"],["Ganti tema","Change theme","切换主题","تغيير المظهر"],["Judul obrolan","Chat title","对话标题","عنوان المحادثة"],["Kembali ke chat","Back to chat","返回对话","العودة إلى المحادثة"],["Lampirkan file atau foto","Attach a file or photo","附加文件或照片","أرفق ملفًا أو صورة"],["Lampirkan","Attach","附加","إرفاق"],["Menu obrolan","Chat menu","对话菜单","قائمة المحادثة"],["Menu chat","Chat menu","对话菜单","قائمة المحادثة"],["Menu proyek","Project menu","项目菜单","قائمة المشروع"],["Proyek baru","New project","新建项目","مشروع جديد"],["Paket Bekki","Bekki plans","Bekki 套餐","باقات Bekki"],
+["Pilih paket AI yang pas untuk Anda","Choose the AI plan that fits you","选择适合您的 AI 套餐","اختر باقة الذكاء الاصطناعي المناسبة لك"],["Kembali","Back","返回","رجوع"],["Gratis","Free","免费","مجاني"],["Bulanan","Monthly","每月","شهريًا"],["Tahunan","Yearly","每年","سنويًا"],["Terpopuler","Most popular","最受欢迎","الأكثر شعبية"],["Tingkatkan paket","Upgrade plan","升级套餐","ترقية الباقة"],["Mulai Gratis","Start free","免费开始","ابدأ مجانًا"],["Pilih Pro","Choose Pro","选择 Pro","اختر Pro"],["Pilih Pro Max","Choose Pro Max","选择 Pro Max","اختر Pro Max"],
+["Upgrade atau batalkan kapan saja.","Upgrade or cancel anytime.","可随时升级或取消。","قم بالترقية أو الإلغاء في أي وقت."],["Harga dalam Rupiah. Dapat berubah sewaktu-waktu.","Prices in Rupiah. Subject to change.","价格以印尼盾计，可能随时变动。","الأسعار بالروبية وقابلة للتغيير في أي وقت."],
+["Untuk mencoba dan penggunaan ringan sehari-hari.","For trying out and light daily use.","适合试用和日常轻度使用。","للتجربة والاستخدام اليومي الخفيف."],["Untuk profesional dan kreator yang butuh lebih banyak.","For professionals and creators who need more.","适合需要更多额度的专业人士和创作者。","للمحترفين وصنّاع المحتوى الذين يحتاجون المزيد."],["Kekuatan penuh untuk tim dan kebutuhan berat.","Full power for teams and heavy workloads.","为团队和高强度需求提供全部性能。","قوة كاملة للفرق والاحتياجات الكبيرة."],
+["Gratis selamanya, tanpa kartu kredit","Free forever, no credit card","永久免费，无需信用卡","مجاني للأبد، بدون بطاقة ائتمان"],["100 pesan per hari","100 messages per day","每天 100 条消息","100 رسالة يوميًا"],["Model AI standar","Standard AI model","标准 AI 模型","نموذج ذكاء اصطناعي قياسي"],["Riwayat chat 30 hari","30-day chat history","30 天对话历史","سجل محادثات لمدة 30 يومًا"],["Dukungan via email","Email support","邮件支持","دعم عبر البريد الإلكتروني"],["Memori","Memory","记忆","الذاكرة"],["Instruksi umum","General instructions","通用指令","تعليمات عامة"],
+["Profil","Profile","个人资料","الملف الشخصي"],["Preferensi","Preferences","偏好设置","التفضيلات"],["Keamanan & Akses","Security & Access","安全与访问","الأمان والوصول"],["Privasi","Privacy","隐私","الخصوصية"],
+["Nama depan","First name","名","الاسم الأول"],["Nama belakang","Last name","姓","اسم العائلة"],["ID Pengguna","User ID","用户 ID","معرّف المستخدم"],["Perbarui profil","Update profile","更新资料","تحديث الملف"],["Ganti foto profil","Change profile photo","更换头像","تغيير صورة الملف"],
+["Statistik Penggunaan","Usage Statistics","使用统计","إحصاءات الاستخدام"],["Rata-rata/hari","Average/day","日均","المعدل اليومي"],["Tertinggi","Highest","最高","الأعلى"],["7 hari","7 days","7 天","7 أيام"],["Dihitung dari pesan yang kamu kirim di akun ini selama 14 hari terakhir. Batas harian hanya sebagai panduan.","Counted from messages you sent on this account over the last 14 days. The daily limit is only a guide.","根据您在此账号过去 14 天发送的消息统计。每日上限仅供参考。","محسوبة من الرسائل التي أرسلتها في هذا الحساب خلال آخر 14 يومًا. الحد اليومي للإرشاد فقط."],
+["Tema","Theme","主题","المظهر"],["Terang, gelap, atau ikuti sistem","Light, dark, or follow system","浅色、深色或跟随系统","فاتح أو داكن أو اتباع النظام"],["Pratinjau","Preview","预览","معاينة"],["Halo Bekki, tolong bantu saya","Hi Bekki, please help me","你好 Bekki，请帮帮我","مرحبًا Bekki، ساعدني من فضلك"],["Tentu, dengan senang hati!","Of course, happy to help!","当然，很乐意！","بالتأكيد، يسعدني ذلك!"],
+["Warna gelembung chat","Chat bubble color","聊天气泡颜色","لون فقاعة المحادثة"],["Warna pesan yang kamu kirim.","The color of messages you send.","你发送的消息的颜色。","لون الرسائل التي ترسلها."],["Warna gelembung","Bubble color","气泡颜色","لون الفقاعة"],["Bawaan","Default","默认","افتراضي"],["Hitam / Putih","Black / White","黑 / 白","أسود / أبيض"],["Biru","Blue","蓝色","أزرق"],["Ungu","Purple","紫色","بنفسجي"],["Pink","Pink","粉色","وردي"],
+["Ukuran teks","Text size","文字大小","حجم النص"],["Ukuran tulisan di dalam chat.","Text size inside the chat.","聊天中的文字大小。","حجم الكتابة داخل المحادثة."],["Kecil","Small","小","صغير"],["Normal","Normal","正常","عادي"],["Besar","Large","大","كبير"],["Sangat besar","Extra large","特大","كبير جدًا"],
+["Bahasa","Language","语言","اللغة"],["Bahasa tampilan dan jawaban Bekki.","Display language and Bekki's replies.","界面语言和 Bekki 回复所用的语言。","لغة العرض ولغة ردود Bekki."],
+["Metode masuk","Sign-in method","登录方式","طريقة تسجيل الدخول"],["Kode lewat email","Email code","邮箱验证码","رمز عبر البريد"],["Keluar dari perangkat ini","Log out of this device","退出此设备","تسجيل الخروج من هذا الجهاز"],["Keluar dari semua perangkat","Log out of all devices","退出所有设备","تسجيل الخروج من جميع الأجهزة"],["Semua HP dan browser harus login lagi","All phones and browsers must sign in again","所有手机和浏览器需要重新登录","يجب تسجيل الدخول مجددًا على جميع الهواتف والمتصفحات"],["Keluar semua","Log out all","全部退出","خروج من الكل"],
+["Sesi aktif","Active sessions","活跃会话","الجلسات النشطة"],["Perangkat yang sedang masuk ke akunmu. Keluarkan yang tidak kamu kenal.","Devices currently signed in to your account. Sign out any you don't recognize.","当前登录您账号的设备。请移除不认识的设备。","الأجهزة المسجّلة حاليًا في حسابك. أخرج أي جهاز لا تعرفه."],["Keluarkan semua perangkat lain","Sign out all other devices","移除所有其他设备","إخراج جميع الأجهزة الأخرى"],["Keluarkan","Sign out","移除","إخراج"],["Mengeluarkan...","Signing out...","正在移除...","جارٍ الإخراج..."],["Perangkat ini","This device","此设备","هذا الجهاز"],["Aktif sekarang","Active now","当前活跃","نشط الآن"],["Belum tersedia.","Not available yet.","暂不可用。","غير متاح بعد."],["Belum ada perangkat tercatat.","No devices recorded yet.","暂无已记录的设备。","لا توجد أجهزة مسجّلة بعد."],["Fitur ini belum diaktifkan.","This feature is not enabled yet.","此功能尚未启用。","هذه الميزة غير مفعّلة بعد."],["Tidak bisa memuat perangkat.","Couldn't load devices.","无法加载设备。","تعذر تحميل الأجهزة."],
+["Download aplikasi","Download app","下载应用","تنزيل التطبيق"],["Pasang Bekki AI di layar utama seperti aplikasi biasa. Buka lebih cepat dan tampil layar penuh, tanpa toko aplikasi.","Install Bekki AI on your home screen like a regular app. Opens faster and runs full screen, no app store needed.","像普通应用一样把 Bekki AI 安装到主屏幕。打开更快、全屏显示，无需应用商店。","ثبّت Bekki AI على الشاشة الرئيسية كأي تطبيق عادي. يفتح أسرع ويعمل بملء الشاشة دون متجر تطبيقات."],["Pasang aplikasi","Install app","安装应用","تثبيت التطبيق"],["Sudah terpasang","Already installed","已安装","مثبّت بالفعل"],
+["Hapus semua obrolan","Delete all chats","删除所有对话","حذف كل المحادثات"],["Menghapus riwayat obrolan di perangkat ini","Deletes chat history on this device","删除此设备上的对话记录","يحذف سجل المحادثات على هذا الجهاز"],["Hapus","Delete","删除","حذف"],["Buka","Open","打开","فتح"],
+["Menyimpan...","Saving...","正在保存...","جارٍ الحفظ..."],["Tersimpan","Saved","已保存","تم الحفظ"],["Tersalin","Copied","已复制","تم النسخ"],["Foto diperbarui","Photo updated","头像已更新","تم تحديث الصورة"]
+];
+var M={},Z=["id","en","zh","ar"];E.forEach(function(r){r.forEach(function(s){if(!M[s])M[s]=r})});
+var UN={menit:["menit","min","分钟","دقيقة"],jam:["jam","h","小时","ساعة"],hari:["hari","d","天","يوم"]};
+var GR={pagi:["Selamat pagi","Good morning","早上好","صباح الخير"],siang:["Selamat siang","Good afternoon","中午好","طاب يومك"],sore:["Selamat sore","Good afternoon","下午好","مساء الخير"],malam:["Selamat malam","Good evening","晚上好","مساء الخير"]};
+function rx(s,L){var m;
+if(m=s.match(/^Selamat (pagi|siang|sore|malam), (.+)\.$/))return L===2?GR[m[1]][2]+"，"+m[2]+"。":GR[m[1]][L]+", "+m[2]+(L===3?"":".");
+if(m=s.match(/^Aktif (\d+) (menit|jam|hari) lalu$/)){var u=UN[m[2]][L];return L===0?s:L===1?"Active "+m[1]+" "+u+" ago":L===2?m[1]+" "+u+"前活跃":"نشط منذ "+m[1]+" "+u}
+if(m=s.match(/^Hari ini (\d+) \/ (\d+)$/))return[ "Hari ini ","Today ","今天 ","اليوم "][L]+m[1]+" / "+m[2];
+if(m=s.match(/^(\d+)\/(\d+): (\d+) pesan$/))return m[1]+"/"+m[2]+": "+m[3]+" "+["pesan","messages","条消息","رسالة"][L];
+if(m=s.match(/^Batas (\d+)$/))return[ "Batas ","Limit ","上限 ","الحد "][L]+m[1];
+return null}
+function tx(s,L){var k=s.trim();if(!k)return null;var r=M[k];var o=r?r[L]:rx(k,L);if(o==null||o===k)return null;return s.replace(k,o)}
+var SKIP=".chat-inner .bubble,.hist-item,.ttl:not(.muted),.ttl-input,textarea,input,script,style,code,pre,.st-id,.dv-err";var ASK=".chat-inner .bubble,.hist-item,.ttl:not(.muted),.ttl-input";
+var OR=new WeakMap(),OP=new WeakMap(),L=-1,busy=false;
+function curL(){try{var l=(JSON.parse(localStorage.getItem("bekki_pref_v1")||"{}")||{}).l;var i=Z.indexOf(l);return i}catch(e){return -1}}
+function doText(n){var t=n.nodeValue,o=OR.get(n);if(o===undefined||OP.get(n)!==t){o=t;OR.set(n,o)}
+var out=L<0?o:(tx(o,L)||o);if(out!==t)n.nodeValue=out;OP.set(n,out)}
+var AT=["aria-label","placeholder","title"];
+function doAttr(e){AT.forEach(function(a){var v=e.getAttribute(a);if(v==null)return;var k="_bk_"+a;var st=e[k];if(!st||st.p!==v)st=e[k]={o:v,p:v};var out=L<0?st.o:(tx(st.o,L)||st.o);if(out!==v)e.setAttribute(a,out);st.p=out})}
+function walk(root){var w=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT,{acceptNode:function(n){if(n.nodeType===1)return n.matches(SKIP)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_SKIP;return NodeFilter.FILTER_ACCEPT}});var n,ts=[];while(n=w.nextNode())ts.push(n);ts.forEach(doText);
+Array.prototype.forEach.call(root.querySelectorAll("[aria-label],[placeholder],[title]"),function(e){if(!e.closest(ASK))doAttr(e)})}
+function run(){busy=true;try{walk(document.body)}catch(e){}busy=false}
+var q=false;function sch(){if(q)return;q=true;requestAnimationFrame(function(){q=false;if(L>=0||hadL)run()})}
+var hadL=false;
+function sty(){var st=document.getElementById("bkLang");if(!st){st=document.createElement("style");st.id="bkLang";document.head.appendChild(st)}
+st.textContent=L<0?"":".msg .bubble{unicode-bidi:plaintext;text-align:start}"+(L===3?".st-main,.dk-sheet,.pk-wrap{direction:rtl}.st-main .st-line small,.st-main p{text-align:start}":"")}
+window.bkLang=function(){L=curL();if(L>=0)hadL=true;document.documentElement.lang=L>=0?Z[L]:"id";sty();run()};
+new MutationObserver(function(ms){if(busy)return;if(L<0&&!hadL)return;for(var i=0;i<ms.length;i++){var t=ms[i].target,el=t.nodeType===1?t:t.parentElement;if(el&&el.closest&&el.closest(".chat-inner .bubble"))continue;sch();return}}).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:AT});
+window.bkLang();
 })();
