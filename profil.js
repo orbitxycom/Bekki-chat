@@ -410,10 +410,13 @@ function ibBadge(){var n=ibUnread(),b=$("pfIbB");if(b){b.textContent=n;b.hidden=
 function ibUid(){var sb=window.bekkiSB;if(IBUID)return Promise.resolve(IBUID);if(!sb||!sb.auth)return Promise.resolve("");return sb.auth.getSession().then(function(r){IBUID=(r&&r.data&&r.data.session&&r.data.session.user&&r.data.session.user.id)||"";return IBUID}).catch(function(){return ""})}
 function ibFetch(force){var sb=window.bekkiSB;if(!sb||!sb.from||IBBUSY)return Promise.resolve();if(!force&&IBD&&Date.now()-IBT<15000)return Promise.resolve();IBBUSY=true;
 return ibUid().then(function(uid){if(!uid){IBBUSY=false;return}
-return sb.from("bekki_inbox").select("id,user_id,title,body,i18n,created_at").order("created_at",{ascending:false}).limit(60).then(function(a){
-if(a.error){IBERR=a.error.message||a.error.code||"error";IBBUSY=false;IBT=Date.now();if(IBD===null)IBD=[];if(stEl&&stTab==="inbox")stBody();return}
+return Promise.all([sb.from("bekki_inbox_global").select("id,title,body,i18n,created_at").order("created_at",{ascending:false}).limit(60),sb.from("bekki_inbox_pribadi").select("id,title,body,i18n,created_at").eq("user_id",uid).order("created_at",{ascending:false}).limit(60)]).then(function(ab){var a=ab[0],c=ab[1];
+var er=(a&&a.error)||(c&&c.error);
+if(er){IBERR=er.message||er.code||"error";IBBUSY=false;IBT=Date.now();if(IBD===null)IBD=[];if(stEl&&stTab==="inbox")stBody();return}
 return sb.from("bekki_inbox_read").select("msg_id").eq("user_id",uid).then(function(b){
-var rd={};((b&&b.data)||[]).forEach(function(x){rd[x.msg_id]=1});var d=a.data||[];
+var rd={};((b&&b.data)||[]).forEach(function(x){rd[x.msg_id]=1});
+var d=((c.data||[]).map(function(m){m.user_id=uid;return m})).concat((a.data||[]).map(function(m){m.user_id=null;return m}));
+d.sort(function(x,y){return x.created_at<y.created_at?1:-1});
 var ch=JSON.stringify(d)!==JSON.stringify(IBD)||JSON.stringify(rd)!==JSON.stringify(IBR)||IBERR;
 IBD=d;IBR=rd;IBERR="";IBT=Date.now();IBBUSY=false;ibBadge();if(ch&&stEl&&stTab==="inbox")stBody()})})}).catch(function(){IBBUSY=false;IBT=Date.now()})}
 function ibMark(ids,read){var sb=window.bekkiSB;if(!ids.length)return;ids.forEach(function(id){if(read)IBR[id]=1;else delete IBR[id]});ibBadge();stBody();
