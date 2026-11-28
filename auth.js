@@ -31,10 +31,11 @@ br=/edg\//i.test(u)?"Edge":/opr\/|opera/i.test(u)?"Opera":/samsungbrowser/i.test
 kind=(/ipad|tablet/i.test(u)||(/android/i.test(u)&&!/mobile/i.test(u)))?"tablet":/android|iphone|ipod|mobile/i.test(u)?"mobile":"desktop";
 return{name:br+" di "+os,os:os,browser:br,kind:kind}}
 function devBeat(){if(!syncUid)return Promise.resolve();var id=devId(),reg=localStorage.getItem(DR)===syncUid;
+function put(){var i=devInfo();return sb.from("bekki_devices").upsert({id:id,user_id:syncUid,name:i.name,os:i.os,browser:i.browser,kind:i.kind,last_seen:new Date().toISOString()}).then(function(x){if(x.error){console.warn("bekki_devices upsert:",x.error.message||x.error)}else{_set.call(localStorage,DR,syncUid)}})}
 try{return sb.from("bekki_devices").select("id").eq("user_id",syncUid).eq("id",id).maybeSingle().then(function(r){
-if(r.error)return;
+if(r.error){console.warn("bekki_devices select:",r.error.message||r.error);return put()}
 if(!r.data&&reg){_rem.call(localStorage,DR);window.bekkiLogout("local");return}
-var i=devInfo();return sb.from("bekki_devices").upsert({id:id,user_id:syncUid,name:i.name,os:i.os,browser:i.browser,kind:i.kind,last_seen:new Date().toISOString()}).then(function(x){if(!x.error)_set.call(localStorage,DR,syncUid)})}).catch(function(){})}catch(e){return Promise.resolve()}}
+return put()}).catch(function(e){console.warn("bekki_devices:",e)})}catch(e){return Promise.resolve()}}
 function devDel(){if(!syncUid)return Promise.resolve();try{return sb.from("bekki_devices").delete().eq("user_id",syncUid).eq("id",devId()).then(function(){},function(){})}catch(e){return Promise.resolve()}}
 window.bekkiFlush=push;
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"&&syncTimer)push()});
