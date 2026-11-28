@@ -36,7 +36,6 @@ function SRK(m){const old=document.getElementById("srk");old&&old.remove();const
 const w=document.createElement("div");w.className="dk-back";w.id="srk";
 w.innerHTML='<div class="dk-sheet" role="dialog" aria-modal="true" aria-labelledby="srT"><div class="dk-grab" aria-hidden="true"><span></span></div><h3 id="srT">Sumber web ('+L.length+')</h3><div class="src-list"></div></div>';
 document.body.appendChild(w);
-const cpb=w.querySelector(".sh-cp");cpb.onclick=()=>CPY(U()).then(()=>{cpb.textContent="Tersalin";cpb.classList.add("ok");TT("Tautan disalin");setTimeout(()=>{cpb.textContent="Salin";cpb.classList.remove("ok")},1800)});
 const sh=w.querySelector(".dk-sheet"),ls=w.querySelector(".src-list");
 L.forEach(x=>{const a=document.createElement("a");a.className="src-it";a.href=x.u;a.target="_blank";a.rel="noopener noreferrer nofollow";
 a.innerHTML='<span class="src-ic">'+SFV(x)+'</span><span class="src-tx"><b></b><small></small><em></em></span>';
@@ -177,6 +176,9 @@ if(navigator.share)apps.push(["Lainnya",SHI.more,"#e5e7eb","#111",()=>shareImg("
 const w=document.createElement("div");w.className="dk-back";w.id="sh";
 w.innerHTML='<div class="dk-sheet sh-sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div class="dk-grab" aria-hidden="true"><span></span></div><h3 id="shT" class="sh-h">Bagikan percakapan</h3><p class="sh-s">Siapa pun yang memiliki tautan dapat melihat pesan sebelumnya.</p><div class="sh-lk"><span class="sh-url">'+ES(U().replace(/^https?:\/\//,""))+'</span><button type="button" class="sh-cp">Salin</button></div><div class="sh-wrap"><button type="button" class="sh-nav l" aria-label="Sebelumnya">'+SHI.pv+'</button><div class="sh-car">'+slides+'</div><button type="button" class="sh-nav r" aria-label="Berikutnya">'+SHI.nx+'</button></div><div class="sh-dots"><i class="on"></i><i></i><i></i></div><div class="sh-line"></div><div class="sh-apps"></div></div>';
 document.body.appendChild(w);
+const cpb=w.querySelector(".sh-cp");const cpOk=()=>{cpb.textContent="Tersalin";cpb.classList.add("ok");TT("Tautan disalin");setTimeout(()=>{cpb.textContent="Salin";cpb.classList.remove("ok")},1800)};
+const cpOld=x=>{const a=document.createElement("textarea");a.value=x;a.setAttribute("readonly","");a.style.cssText="position:fixed;top:0;left:0;opacity:0;font-size:16px";w.appendChild(a);a.focus();a.select();a.setSelectionRange(0,x.length);let ok=!1;try{ok=document.execCommand("copy")}catch(e){}a.remove();return ok};
+cpb.onclick=()=>{const x=U();let d=!1;const f=()=>{if(d)return;d=!0;cpOld(x)?cpOk():prompt("Salin tautan ini:",x)};try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(x).then(()=>{if(!d){d=!0;cpOk()}},f);return}}catch(e){}f()};
 const sh=w.querySelector(".dk-sheet"),car=w.querySelector(".sh-car"),dots=w.querySelectorAll(".sh-dots i"),ap=w.querySelector(".sh-apps");
 let gone=!1;const cl=()=>{if(gone)return;gone=!0;document.removeEventListener("keydown",kd,!0);w.classList.add("out");sh.style.transition="transform .22s ease";sh.style.transform="translateY(105%)";setTimeout(()=>w.remove(),230)};
 function kd(e){e.key==="Escape"&&(e.stopPropagation(),cl())}document.addEventListener("keydown",kd,!0);
