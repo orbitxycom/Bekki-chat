@@ -1084,3 +1084,9 @@ header #toggle2 svg{font-size:22px!important}
 .main:not(.home){position:relative}
 .main:not(.home)>header{position:absolute!important;top:0;left:0;right:0;z-index:6;background:color-mix(in oklab,var(--background) 52%,transparent)!important;-webkit-backdrop-filter:blur(18px) saturate(1.7);backdrop-filter:blur(18px) saturate(1.7);border-bottom:1px solid color-mix(in oklab,var(--foreground) 7%,transparent)}
 .main:not(.home)>.chat{padding-top:calc(56px + env(safe-area-inset-top))}
+
+/* HP: sembunyikan garis scroll (tetap bisa digeser); laptop/desktop tetap ada */
+@media (hover:none),(pointer:coarse){
+  .chat,.hist,.st-main,.st-body{scrollbar-width:none;-ms-overflow-style:none}
+  .chat::-webkit-scrollbar,.hist::-webkit-scrollbar,.st-main::-webkit-scrollbar,.st-body::-webkit-scrollbar{display:none;width:0;height:0}
+}
