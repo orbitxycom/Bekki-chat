@@ -422,6 +422,22 @@ IBD=d;IBR=rd;IBERR="";IBT=Date.now();IBBUSY=false;ibBadge();if(ch&&stEl&&stTab==
 function ibMark(ids,read){var sb=window.bekkiSB;if(!ids.length)return;ids.forEach(function(id){if(read)IBR[id]=1;else delete IBR[id]});ibBadge();stBody();
 ibUid().then(function(uid){if(!uid||!sb)return;var q=read?sb.from("bekki_inbox_read").upsert(ids.map(function(id){return{user_id:uid,msg_id:id}}),{onConflict:"user_id,msg_id",ignoreDuplicates:true}):sb.from("bekki_inbox_read").delete().eq("user_id",uid).in("msg_id",ids);
 q.then(function(r){if(r&&r.error){IBMSG=r.error.message||r.error.code||"error";ids.forEach(function(id){if(read)delete IBR[id];else IBR[id]=1})}else IBMSG="";ibBadge();if(stEl&&stTab==="inbox")stBody()},function(e){IBMSG=String((e&&e.message)||e||"error");ids.forEach(function(id){if(read)delete IBR[id];else IBR[id]=1});ibBadge();if(stEl&&stTab==="inbox")stBody()})})}
+var IBTC=null,IBQ={},IBTRY={},IBLN={en:"English",zh:"Simplified Chinese",ar:"Arabic",ru:"Russian",de:"German"};
+function ibtc(){if(!IBTC){try{IBTC=JSON.parse(localStorage.getItem("bekki_ibt_v1")||"{}")||{}}catch(e){IBTC={}}}return IBTC}
+function ibh(t){var h=5381,i;for(i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return (h>>>0).toString(36)}
+function ibKey(m,L){return m.id+":"+L+":"+ibh(m.title+"|"+m.body)}
+function ibTr(m,L){if(!L||L==="id"||!IBLN[L])return null;var c=ibtc()[ibKey(m,L)];if(c)return c;ibQueue(L);return null}
+function ibQueue(L){if(IBQ[L]||(IBTRY[L]&&Date.now()-IBTRY[L]<60000))return;IBQ[L]=1;setTimeout(function(){ibRunTr(L)},0)}
+function ibRunTr(L){var items=(IBD||[]).filter(function(m){return !(m.i18n&&m.i18n[L])&&!ibtc()[ibKey(m,L)]}).slice(0,20);
+if(!items.length){IBQ[L]=0;return}
+var G="https://adxyijyerblmosdzsbyp.supabase.co",W="sb_publishable_bCG2DJjBfLAMp2ME9Pe3cQ_jbPmlnnX";
+var q="Translate the title (t) and body (b) of every item in this JSON array into "+IBLN[L]+". Keep the meaning, tone, names and numbers. Return ONLY a JSON array with the same number of items in the same order, each shaped like {\"t\":\"...\",\"b\":\"...\"}. No explanations, no code fences.\n\n"+JSON.stringify(items.map(function(m){return{t:m.title,b:m.body}}));
+(window.bekkiToken?window.bekkiToken():Promise.resolve(W)).then(function(tok){return fetch(G+"/functions/v1/chat",{method:"POST",headers:{"Content-Type":"application/json",apikey:W,Authorization:"Bearer "+tok},body:JSON.stringify({q:q,messages:[{role:"user",content:q}]})})})
+.then(function(r){return r.json().then(function(j){if(!r.ok||!j.reply)throw new Error("x");return j.reply})})
+.then(function(t){var a=t.indexOf("["),b=t.lastIndexOf("]");var arr=JSON.parse(t.slice(a,b+1));if(!Array.isArray(arr)||arr.length!==items.length)throw new Error("n");
+var c=ibtc();items.forEach(function(m,i){var x=arr[i]||{};if(typeof x.t==="string"&&typeof x.b==="string"&&x.t&&x.b)c[ibKey(m,L)]={t:x.t,b:x.b}});
+try{localStorage.setItem("bekki_ibt_v1",JSON.stringify(c))}catch(e){}IBQ[L]=0;if(stEl&&stTab==="inbox"&&ibLang()===L)stBody()})
+.catch(function(){IBTRY[L]=Date.now();IBQ[L]=0})}
 function inboxHTML(){var L=ibLang(),LC={id:"id-ID",en:"en-US",zh:"zh-CN",ar:"ar",ru:"ru-RU",de:"de-DE"}[L]||"id-ID";var h='<h2 class="st-h">Inbox</h2>';
 if(IBD===null)return h+'<div class="ib-empty">Memuat...</div>';
 if(IBERR)return h+'<div class="ib-empty">Fitur ini belum diaktifkan.<br><small class="ib-err"></small></div>';
@@ -432,7 +448,7 @@ h+='<div class="ib-top"><div class="ib-tabs" role="tablist"><button type="button
 h+='<div class="ib-note" id="ibNote"'+(IBMSG?'':' hidden')+'></div>';
 if(!cur.length)return h+'<div class="ib-empty">Belum ada pesan.</div>';
 return h+'<div class="ib-list">'
-+cur.map(function(m){var x=(m.i18n&&m.i18n[L])||{},t=x.t||m.title,b=x.b||m.body,un=!IBR[m.id],d="";try{d=new Date(m.created_at).toLocaleDateString(LC,{day:"numeric",month:"long",year:"numeric"})}catch(e){}
++cur.map(function(m){var x=(m.i18n&&m.i18n[L])||ibTr(m,L)||{},t=x.t||m.title,b=x.b||m.body,un=!IBR[m.id],d="";try{d=new Date(m.created_at).toLocaleDateString(LC,{day:"numeric",month:"long",year:"numeric"})}catch(e){}
 return '<button type="button" class="ib-card'+(un?' un':'')+'" data-i="'+esc(m.id)+'"><i class="ib-dot"></i><span class="ib-t">'+esc(t)+'</span><span class="ib-d">'+esc(d)+'</span><span class="ib-b">'+esc(b)+'</span></button>'}).join("")+'</div>'}
 function inboxBind(box){var all=box.querySelector("#ibAll"),er=box.querySelector(".ib-err"),nt=box.querySelector("#ibNote");if(nt&&IBMSG)nt.textContent="Gagal menyimpan status baca: "+IBMSG;if(er)er.textContent="Pesan dari server: "+IBERR;
 if(all)all.onclick=function(){ibMark((IBD||[]).filter(function(m){return !IBR[m.id]&&(IBTAB==="p"?m.user_id:!m.user_id)}).map(function(m){return m.id}),true)};
